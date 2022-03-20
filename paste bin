@@ -1,0 +1,29 @@
+
+                screen.fill((0, 0, 0,))
+                pygame.draw.rect(screen, red, pygame.Rect(x, y, 100, 100))
+                pygame.display.flip()
+            if event.key == pygame.K_s:
+                x = x + 0
+                y = y + 50
+
+
+                screen.fill((0, 0, 0,))
+                pygame.draw.rect(screen, red, pygame.Rect(x, y, 100, 100))
+                pygame.display.flip()
+            if event.key == pygame.K_a:
+                x = x + -50
+                y = y + 0
+
+
+                screen.fill((0, 0, 0,))
+                pygame.draw.rect(screen, red, pygame.Rect(x, y, 100, 100))
+                pygame.display.flip()
+            if event.key == pygame.K_d:
+                x = x + 50
+                y = y + 0
+
+
+                screen.fill((0, 0, 0,))
+                pygame.draw.rect(screen, red, pygame.Rect(x, y, 100, 100))
+                pygame.display.flip()
+                pygame.Rect.move_ip(x, y)
