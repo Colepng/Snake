@@ -27,3 +27,24 @@
                 pygame.draw.rect(screen, red, pygame.Rect(x, y, 100, 100))
                 pygame.display.flip()
                 pygame.Rect.move_ip(x, y)
+
+                                if event.type == KEYDOWN and temp_if == 0:
+                        speed = dir[event.key]
+                        temp_if = 1
+                        rect.move_ip(speed)
+
+                                rect.move_ip(temp_speed)                                   
+                                if temp_l % 1 == 0.0 and temp_r % 1 == 0.0 and temp_top % 1 == 0.0 and temp_bot % 1 == 0.0:
+                                        speed = dir[event.key]
+                                        rect.move_ip(speed)
+                                        pygame.display.flip()
+                                        Blob__ = True                            
+                                else:
+                                        print(temp_l % 1)
+                                        print(temp_bot % 1)
+                                        print(temp_top % 1)
+                                        print(temp_r % 1)
+                                        print("test")
+                                        rect.move_ip(temp_speed)
+                                        pygame.display.flip()
+                                        print(temp_speed)

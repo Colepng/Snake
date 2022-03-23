@@ -6,53 +6,67 @@ pygame.init()
 
 clock=pygame.time.Clock()
 
+grid_size = 35
+
 SIZE = width, height = 800, 800
-red = (255,0,0)
-blue = (0, 0, 255)
+GREEN = (0,100,0)
+WHITE = (255,255,255)
 bg = 0,0,0
 screen = pygame.display.set_mode(SIZE)
 
-x = 350
-y = 350
+x = 400
+y = 400
 
-rect_def = pygame.Rect(x, y, 50, 50)
+loop = 0
+rect_def = pygame.Rect(350, 350, grid_size, grid_size)
 rect = rect_def.copy()
 speed = [0, 0]
 
-dir = { K_w: (0, -5), K_s: (0, 5), K_d: (5, 0), K_a: (-5,0)}
+dir = { K_w: (0, -grid_size), K_s: (0, grid_size), K_d: (grid_size, 0), K_a: (-grid_size,0)}
 
-pygame.draw.rect(screen, red, rect)
+pygame.draw.rect(screen, GREEN, rect)
 pygame.display.flip()
 
+
+def drawGrid():
+    blockSize = grid_size #Set the size of the grid block
+    for x in range(0, width, blockSize):
+        for y in range(0, height, blockSize):
+            rect = pygame.Rect(x, y, blockSize, blockSize)
+            pygame.draw.rect(screen, WHITE, rect, 1)
+
+
 while 1:
-    for event in pygame.event.get():
-        if event.type == QUIT: sys.exit()
+        drawGrid()
+        for event in pygame.event.get():
+                if event.type == QUIT: sys.exit()
+
+                if event.type == KEYDOWN:
+                    speed = dir[event.key]
     
-        if event.type == KEYDOWN:
-            speed = dir[event.key]
-            
-    rect.move_ip(speed)
-
-    if rect.left < 0:
-            print("died")
+        rect.move_ip(speed)
+        if rect.left < 0:
+            #print("died")
             speed = [0,0]
             rect = rect_def.copy()
 
-    if rect.right > width:
-            print("died")
+        if rect.right > width:
+            #print("died")
             speed = [0,0]
             rect = rect_def.copy()
 
-    if rect.top < 0:
-            print("died")
+        if rect.top < 0:
+            #print("died")
             speed = [0,0]
             rect = rect_def.copy()
 
-    if rect.bottom > height:
-            print("died")
+        if rect.bottom > height:
+            #print("died")
             speed = [0,0]
             rect = rect_def.copy()
-    clock.tick(60)
-    screen.fill(bg)
-    pygame.draw.rect(screen, blue, rect)
-    pygame.display.flip()
+        clock.tick(8)
+        screen.fill(bg)
+        drawGrid()
+        pygame.draw.rect(screen, GREEN, rect)
+        pygame.display.flip()
+        #print(x,y,speed)
