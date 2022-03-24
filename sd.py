@@ -1,19 +1,17 @@
 import pygame
-from pygame.rect import *
-from pygame.locals import * 
-
-GREEN = 0, 255, 0
+from pygame.locals import *
 
 class Snake:
     def __init__(self, parent_screen):
         self.parent_screen = parent_screen
+        self.block = pygame.image.load("SmallLogo.png").convert()
         self.x = 100
         self.y = 100
-        self.head = pygame.Rect(self.x, self.y, 50, 50)
-        
+
     def draw(self):
-        self.parent_screen.fill((100, 100, 100))
-        pygame.draw.rect(self.parent_screen, green, pygame.Rect(self.x, self.y, 50, 50))
+        self.parent_screen.fill((110, 110, 5))
+
+        self.parent_screen.blit(self.block, (self.x, self.y))
         pygame.display.flip()
         
     def move_left(self):
@@ -32,13 +30,14 @@ class Snake:
         self.y += 10
         self.draw()
 
+
 class Game:
     def __init__(self):
         pygame.init()
         self.surface = pygame.display.set_mode((500, 500))
         self.snake = Snake(self.surface)
         self.snake.draw()
-    
+
     def run(self):
         running = True
 
@@ -61,9 +60,6 @@ class Game:
 
                 elif event.type == QUIT:
                     running = False
-
-
-
 
 if __name__ == '__main__':
     game = Game()
