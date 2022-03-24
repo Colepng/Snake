@@ -65,6 +65,19 @@ class Game:
 
 
 
+<<<<<<< HEAD:main.py
 if __name__ == '__main__':
     game = Game()
     game.run()
+=======
+        if rect.bottom > height:
+            #print("died")
+            speed = [0,0]
+            rect = rect_def.copy()
+        clock.tick(8)
+        screen.fill(bg)
+        drawGrid()
+        pygame.draw.rect(screen, GREEN, rect)
+        pygame.display.flip()
+        #print(x,y,speed)
+>>>>>>> 8f28a21249f13284ebddc397b0f147f70ba6d2d5:old main.py
