@@ -4,7 +4,7 @@ from pygame.locals import *
 class Snake:
     def __init__(self, parent_screen):
         self.parent_screen = parent_screen
-        self.block = pygame.image.load("SmallLogo.png").convert()
+        self.block = pygame.image.load("download.jpg").convert()
         self.x = 100
         self.y = 100
 
