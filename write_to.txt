@@ -1,10 +1,10 @@
 districtRanks:districtCode:ONT
 teamNumber:865
-rank:12
-totalPoints:33
-event1Code:ON305
-event1Points:33.0
-event2Code:ON263
+rank:2
+totalPoints:78
+event1Code:ONBAR
+event1Points:78.0
+event2Code:null
 event2Points:null
 districtCmpCode:null
 districtCmpPoints:null
