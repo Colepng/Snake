@@ -1,28 +1,38 @@
-import pygame
+import pygame               #importing everything from pygame that I need
 from pygame.rect import *
 from pygame.locals import * 
 
-GREEN = 0, 255, 0
+GREEN = 0, 255, 0 #setting the first colout of the snake
+LIGHT_GREEN = 0,150,0 #setting the second colout of the snake
 clock=pygame.time.Clock()
 
+SIZE = 35
+
 class Snake:
-    def __init__(self, parent_screen):
-        self.parent_screen = parent_screen
-        self.speed = [0, 0]
-        self.x = 100
-        self.y = 100
-        self.rect = pygame.Rect(self.x, self.y, 50, 50)
-        self.parent_screen.fill((100, 100, 100))
-        pygame.draw.rect(self.parent_screen, GREEN, pygame.Rect(self.x, self.y, 50, 50))
-        pygame.display.flip()
-        self.direction = "down"
+    def __init__(self, parent_screen, length):
+        self.length = length #A local varibel for the length of the snake
+        self.parent_screen = parent_screen #A local varibel for the surface
+        self.x = [SIZE]*length 
+        self.y = [SIZE]*length
+        self.rect = pygame.Rect(SIZE, SIZE, 50, 50) #A local varibel for the head of the snake
+        self.parent_screen.fill((100, 100, 100))#fills the screen with green so the snake old postion gets drawened over
+        pygame.draw.rect(self.parent_screen, GREEN, pygame.Rect(SIZE, SIZE, 50, 50)) #Draws the first instence of the snake
+        pygame.display.flip()   #Updates the user screen
+        self.direction = "down" #sets starting direction to down
+        self.move_size = 20 #sets how much you move by
+        self.count = 1 # used to switch betwwen colours when drawing the snake
         
     def draw(self):
         self.parent_screen.fill((100, 100, 100))
-
-        pygame.draw.rect(self.parent_screen, GREEN, pygame.Rect(self.x, self.y, 50, 50))
+        for i in range(self.length): #A for loop that draws a new segment of the snake
+            if self.count == 1:
+                pygame.draw.rect(self.parent_screen, GREEN, pygame.Rect(self.x[i], self.y[i], SIZE, SIZE))
+                self.count = 2
+            elif self.count == 2:
+                pygame.draw.rect(self.parent_screen, LIGHT_GREEN, pygame.Rect(self.x[i], self.y[i], SIZE, SIZE))
+                self.count = 1
         pygame.display.flip()
-
+    #4 functions that set your direction based on what key you pressed
     def move_left(self):
         self.direction = "left"
 
@@ -34,36 +44,43 @@ class Snake:
 
     def move_down(self):
         self.direction = "down"
-
+    #A function that is automaticly moving
     def auto_move(self):
+
+        for i in range(self.length-1,0,-1):
+            self.x[i] =  self.x[i - 1]
+            print(self.x[i])
+            self.y[i] =  self.y[i - 1]
+            print(self.y[i])
+
         if self.direction == "left":
-            self.x -= 7
-
+            self.x[0] -= SIZE + 5
+           #  print(self.x[0])
         if self.direction == "right":
-            self.x += 7
-
+            self.x[0] += SIZE + 5
+           # print(self.x[0])
         if self.direction == "up":
-            self.y -= 7
-
+            self.y[0] -= SIZE + 5
+           # print(self.y[0])
         if self.direction == "down":
-            self.y += 7
-        print("test")
+            self.y[0] += SIZE + 5
+           # print(self.y[0])
         self.draw()
 
-class Game:
+class Game: #Crates a class for the actual game
     def __init__(self):
-        pygame.init()
-        self.surface = pygame.display.set_mode((500, 500))
-        self.snake = Snake(self.surface)
+        pygame.init()#starts pygame
+        self.surface = pygame.display.set_mode((1000, 800))#sets the windoes size
+        self.snake = Snake(self.surface)#gives the snake class its function and macking it a local varible, first argument is the surface and the second one is the legnth
         self.snake.draw()
     
-    def run(self):
+    def run(self):# The games loop
         running = True
 
         while running:
-            for event in pygame.event.get():
+            for event in pygame.event.get():#gets all events that are happening
                 if event.type == KEYDOWN:
-                    if event.key == K_ESCAPE:
+                    if event.key == K_ESCAPE:#if the esc key is press it stop the loop from running
                         running = False
                     if event.key == K_LEFT:
                         self.snake.move_left()
@@ -77,13 +94,13 @@ class Game:
                     if event.key == K_DOWN:
                         self.snake.move_down()
 
-                if event.type == QUIT:
+                if event.type == QUIT:#if the user press the x at the top of the screen it will close the program
                     running = False
 
-            self.snake.auto_move()
-            clock.tick(40)
+            self.snake.auto_move()#calls the auto move function
+            clock.tick(8)#sets the in game tick speed
             
 
 
-game = Game()
-game.run()
+game = Game()#makes the game class a varible 
+game.run()#Runs the run fuctions
