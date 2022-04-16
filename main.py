@@ -1,13 +1,23 @@
 import pygame               #importing everything from pygame that I need
 from pygame.rect import *
 from pygame.locals import * 
-
+import random
 GREEN = 0, 255, 0 #setting the first colout of the snake
 LIGHT_GREEN = 0,150,0 #setting the second colout of the snake
 clock=pygame.time.Clock()
 
 SIZE = 35
+length = 3
 
+class Apple:
+    def __init__(self, parent_screen):
+        self.parent_screen = parent_screen
+        self.apple_x = round(random.randint(0,1000)/35)*35
+        self.apple_y = round(random.randint(0,800)/35)*35
+        self.apple =  pygame.image.load("apple.png").convert_alpha()
+
+    def apple_draw(self):
+        self.parent_screen.blit(self.apple, (self.apple_x,self.apple_y))
 class Snake:
     def __init__(self, parent_screen, length):
         self.length = length #A local varibel for the length of the snake
@@ -21,6 +31,7 @@ class Snake:
         self.direction = "down" #sets starting direction to down
         self.move_size = 20 #sets how much you move by
         self.count = 1 # used to switch betwwen colours when drawing the snake
+        self.apple = Apple(self.parent_screen)
         
     def draw(self):
         self.parent_screen.fill((100, 100, 100))
@@ -31,6 +42,7 @@ class Snake:
             elif self.count == 2:
                 pygame.draw.rect(self.parent_screen, LIGHT_GREEN, pygame.Rect(self.x[i], self.y[i], SIZE, SIZE))
                 self.count = 1
+        self.apple.apple_draw()
         pygame.display.flip()
     #4 functions that set your direction based on what key you pressed
     def move_left(self):
@@ -65,13 +77,21 @@ class Snake:
         if self.direction == "down":
             self.y[0] += SIZE + 5
            # print(self.y[0])
+        self.apple_x_pos = SIZE + self.apple.apple_x
+        self.apple_x_neg = SIZE - self.apple.apple_x
+        self.apple_y_pos = SIZE + self.apple.apple_y
+        self.apple_y_neg = SIZE - self.apple.apple_y
+        if self.x[0] <  self.apple_x_pos and self.x[0] > self.apple_x_neg and self.y[0] <  self.apple_y_pos and self.y[0] > self.apple_y_neg:
+            self.apple.apple_x = round(random.randint(0,1000)/35)*35
+            self.apple.apple_y = round(random.randint(0,1000)/35)*35
+            #self.length += 1
         self.draw()
 
 class Game: #Crates a class for the actual game
     def __init__(self):
         pygame.init()#starts pygame
         self.surface = pygame.display.set_mode((1000, 800))#sets the windoes size
-        self.snake = Snake(self.surface)#gives the snake class its function and macking it a local varible, first argument is the surface and the second one is the legnth
+        self.snake = Snake(self.surface,2)#gives the snake class its function and macking it a local varible, first argument is the surface and the second one is the legnth
         self.snake.draw()
     
     def run(self):# The games loop
