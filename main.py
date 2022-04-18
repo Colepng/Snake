@@ -23,7 +23,15 @@ def calc_in_grid(num_to_round, grid_size):
 windoes_x = calc_in_grid(1000,SIZE)
 windoes_y = calc_in_grid(800,SIZE)
 running = True
-
+def set_up_highscore():
+    filename = "highscore.pk"
+    with open(filename,  "wb") as f:
+        highscore = 0
+        pickle.dump(highscore, f)
+    with open(filename,  "rb") as f:
+        unpick = pickle.Unpickler(f)
+        #print(unpick.load())
+    
 class Apple:
     def __init__(self, parent_screen):
         self.parent_screen = parent_screen
@@ -128,10 +136,30 @@ class Snake:
             self.y[0] += SIZE
         
         if self.x[0] > windoes_x or self.x[0] < 0 or self.y[0] > windoes_y or self.y[0] < 0:
-            print("out of bounds")
+            self.new_high_score = False
+            filename = "highscore.pk"
+            with open(filename,  "rb") as f:
+                unpick = pickle.Unpickler(f)
+                old_highscore = unpick.load()
+                #print(old_highscore)
+                if old_highscore < self.apple_count:
+                    #print("trues")
+                    with open(filename,  "wb") as f:
+                        pickle.dump(self.apple_count, f)
+                        self.new_high_score = True
+                        #print("tuerer")
+            with open(filename,  "rb") as f:
+                unpick = pickle.Unpickler(f)
+                self.highscore = unpick.load()
+
             length = 2
-            #Tk().wm_withdraw() #to hide the main window
-            if messagebox.askyesno("",f"You eat {self.apple_count} apples, Do you want to Play again?") == True:
+            Tk().wm_withdraw() #to hide the main window
+            if self.new_high_score == True:
+                yesno_message = f"You eat {self.apple_count} apples, You set a new highscore it is {self.highscore}, Do you want to Play again?"
+            else:
+                yesno_message = f"You eat {self.apple_count} apples, Your highscore is {self.highscore} Do you want to Play again?"
+            if messagebox.askyesno("",yesno_message) == True:
+                self.apple_count = 0
                 self.parent_screen.fill((100, 100, 100))
                 self.count = 1
                 for i in range(length):
@@ -140,22 +168,22 @@ class Snake:
                     if self.count == 1:
                         pygame.draw.rect(self.parent_screen, BLUE, pygame.Rect(self.x[i], self.y[i], SIZE, SIZE))
                         self.count = 2
-                        print(1)
+                        #print(1)
                     elif self.count == 2:
                         pygame.draw.rect(self.parent_screen, GREEN, pygame.Rect(self.x[i], self.y[i], SIZE, SIZE))
                         self.count = 3
-                        print(2)
+                        #print(2)
                     elif self.count == 3:
                         pygame.draw.rect(self.parent_screen, LIGHT_GREEN, pygame.Rect(self.x[i], self.y[i], SIZE, SIZE))
                         self.count = 2
-                        print(3)                
+                        #print(3)                
             else:
                 global running
                 running = False
-                print("exit")
+                #print("exit")
 
         self.head = pygame.Rect(self.x[0], self.y[0], SIZE, SIZE)
-        print(self.head.topleft, self.apple.apple_rect.topleft)
+        #print(self.head.topleft, self.apple.apple_rect.topleft)
         if self.head.topleft == self.apple.apple_rect.topleft:
             self.apple.apple_move()
             self.ins_length()        
@@ -165,12 +193,12 @@ class Snake:
         
 class Game: #Crates a class for the actual game
     def __init__(self):
-        
         pygame.init()#starts pygame
         self.snake = Snake(surface)#gives the snake class its function and macking it a local varible, first argument is the surface and the second one is the legnth
         self.snake.draw()
     
     def run(self):# The games loop
+        #set_up_highscore()
         global running
         while running:
             for event in pygame.event.get():#gets all events that are happening
