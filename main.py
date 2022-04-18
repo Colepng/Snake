@@ -2,12 +2,10 @@ import pygame               #importing everything from pygame that I need
 from pygame.rect import *
 from pygame.locals import * 
 
-from tkinter import *
-from tkinter import messagebox
-
 import random
 import pickle
-
+from tkinter import *
+from tkinter import messagebox
 GREEN = 0, 255, 0 #setting the first colout of the snake
 LIGHT_GREEN = 0,150,0 #setting the second colout of the snake
 BLUE = 0,0,255
@@ -84,6 +82,7 @@ class Snake:
         self.parent_screen.fill((100, 100, 100))
         self.count = 1
         for i in range(length): #A for loop that draws a new segment of the snake
+           # print(self.x[i],self.y[i],i)
             if self.count == 1:
                 pygame.draw.rect(self.parent_screen, BLUE, pygame.Rect(self.x[i], self.y[i], SIZE, SIZE))
                 self.count = 2
@@ -114,6 +113,55 @@ class Snake:
         if self.direction != "up":
             self.direction = "down"
     #A function that is automaticly moving
+
+    def check_highscore(self):
+        global length
+        self.new_high_score = False
+        filename = "highscore.pk"
+        with open(filename,  "rb") as f:
+            unpick = pickle.Unpickler(f)
+            old_highscore = unpick.load()
+            #print(old_highscore)
+            if old_highscore < self.apple_count:
+                #print("trues")
+                with open(filename,  "wb") as f:
+                    pickle.dump(self.apple_count, f)
+                    self.new_high_score = True
+                    #print("tuerer")
+        with open(filename,  "rb") as f:
+            unpick = pickle.Unpickler(f)
+            self.highscore = unpick.load()
+
+        length = 2
+        Tk().wm_withdraw() #to hide the main window
+        if self.new_high_score == True:
+            yesno_message = f"You eat {self.apple_count} apples, You set a new highscore it is {self.highscore}, Do you want to Play again?"
+        else:
+            yesno_message = f"You eat {self.apple_count} apples, Your highscore is {self.highscore} Do you want to Play again?"
+        if messagebox.askyesno("", yesno_message) == True:
+            self.apple_count = 0
+            self.parent_screen.fill((100, 100, 100))
+            self.count = 1
+            for i in range(length):
+                self.x[i] = 0
+                self.y[i] = 0
+                if self.count == 1:
+                    pygame.draw.rect(self.parent_screen, BLUE, pygame.Rect(self.x[i], self.y[i], SIZE, SIZE))
+                    self.count = 2
+                    #print(1)
+                elif self.count == 2:
+                    pygame.draw.rect(self.parent_screen, GREEN, pygame.Rect(self.x[i], self.y[i], SIZE, SIZE))
+                    self.count = 3
+                    #print(2)
+                elif self.count == 3:
+                    pygame.draw.rect(self.parent_screen, LIGHT_GREEN, pygame.Rect(self.x[i], self.y[i], SIZE, SIZE))
+                    self.count = 2
+                    #print(3)                
+        else:
+            global running
+            running = False
+            #print("exit")
+
     def auto_move(self):
         global length
         for i in range(length-1,0,-1):
@@ -136,51 +184,11 @@ class Snake:
             self.y[0] += SIZE
         
         if self.x[0] > windoes_x or self.x[0] < 0 or self.y[0] > windoes_y or self.y[0] < 0:
-            self.new_high_score = False
-            filename = "highscore.pk"
-            with open(filename,  "rb") as f:
-                unpick = pickle.Unpickler(f)
-                old_highscore = unpick.load()
-                #print(old_highscore)
-                if old_highscore < self.apple_count:
-                    #print("trues")
-                    with open(filename,  "wb") as f:
-                        pickle.dump(self.apple_count, f)
-                        self.new_high_score = True
-                        #print("tuerer")
-            with open(filename,  "rb") as f:
-                unpick = pickle.Unpickler(f)
-                self.highscore = unpick.load()
+           self.check_highscore()
 
-            length = 2
-            Tk().wm_withdraw() #to hide the main window
-            if self.new_high_score == True:
-                yesno_message = f"You eat {self.apple_count} apples, You set a new highscore it is {self.highscore}, Do you want to Play again?"
-            else:
-                yesno_message = f"You eat {self.apple_count} apples, Your highscore is {self.highscore} Do you want to Play again?"
-            if messagebox.askyesno("",yesno_message) == True:
-                self.apple_count = 0
-                self.parent_screen.fill((100, 100, 100))
-                self.count = 1
-                for i in range(length):
-                    self.x[i] = 0
-                    self.y[i] = 0
-                    if self.count == 1:
-                        pygame.draw.rect(self.parent_screen, BLUE, pygame.Rect(self.x[i], self.y[i], SIZE, SIZE))
-                        self.count = 2
-                        #print(1)
-                    elif self.count == 2:
-                        pygame.draw.rect(self.parent_screen, GREEN, pygame.Rect(self.x[i], self.y[i], SIZE, SIZE))
-                        self.count = 3
-                        #print(2)
-                    elif self.count == 3:
-                        pygame.draw.rect(self.parent_screen, LIGHT_GREEN, pygame.Rect(self.x[i], self.y[i], SIZE, SIZE))
-                        self.count = 2
-                        #print(3)                
-            else:
-                global running
-                running = False
-                #print("exit")
+        for i in range(2,length):
+            if self.head.topleft == (self.x[i], self.y[i]):
+                self.check_highscore()                
 
         self.head = pygame.Rect(self.x[0], self.y[0], SIZE, SIZE)
         #print(self.head.topleft, self.apple.apple_rect.topleft)
@@ -188,6 +196,7 @@ class Snake:
             self.apple.apple_move()
             self.ins_length()        
         self.draw()
+        
 
 
         
