@@ -2,10 +2,12 @@ import pygame               #importing everything from pygame that I need
 from pygame.rect import *
 from pygame.locals import * 
 
-import random
-import pickle
 from tkinter import *
 from tkinter import messagebox
+
+import random
+import pickle
+
 GREEN = 0, 255, 0 #setting the first colout of the snake
 LIGHT_GREEN = 0,150,0 #setting the second colout of the snake
 BLUE = 0,0,255
@@ -13,7 +15,7 @@ WHITE = 255,255,255
 clock=pygame.time.Clock()
 
 SIZE = 35
-length = 2
+length = 5
 
 def calc_in_grid(num_to_round, grid_size):
     return round(num_to_round/grid_size)*grid_size
@@ -47,8 +49,8 @@ class Apple:
         self.apple_rect = self.apple.get_rect(x=self.apple_x,y=self.apple_y)
 
 surface = pygame.display.set_mode((windoes_x, windoes_y))#sets the windoes size
-starting_x = calc_in_grid(500,SIZE)
-starting_y = calc_in_grid(400,SIZE)
+starting_x = calc_in_grid(windoes_x/2,SIZE)
+starting_y = calc_in_grid(windoes_y/2,SIZE)
 
 def drawGrid():
     blockSize = 35 #Set the size of the grid block
@@ -65,9 +67,13 @@ class Snake:
         self.parent_screen = parent_screen #A local varibel for the surface
         self.x = [starting_x]*length 
         self.y = [starting_y]*length
-        self.head = pygame.Rect(self.x[0], self.y[0], SIZE, SIZE) #A local varibel for the head of the snake
-        self.direction = "" #sets starting direction to down
-        self.count = 1 # used to switch betwwen colours when drawing the snake
+        self.x[0] = starting_x
+        self.y[0] = starting_y
+        self.direction = "right"
+        for i in range(length-1,0,-1):
+            self.x[i] =  self.x[0] - SIZE*i
+            self.y[i] = self.y[0]
+        self.head = pygame.Rect(self.x[0], self.y[0], SIZE, SIZE) #A local varibel for the head of the snakee
         self.apple = Apple(self.parent_screen)
 
     def ins_length(self):
@@ -93,7 +99,7 @@ class Snake:
                 pygame.draw.rect(self.parent_screen, LIGHT_GREEN, pygame.Rect(self.x[i], self.y[i], SIZE, SIZE))
                 self.count = 2
         self.apple.apple_draw()
-        #drawGrid()
+        drawGrid()
         pygame.display.flip()
 
     #4 functions that set your direction based on what key you pressed
@@ -113,9 +119,10 @@ class Snake:
         if self.direction != "up":
             self.direction = "down"
     #A function that is automaticly moving
-
-    def check_highscore(self):
+    
+    def play_again(self):
         global length
+        #length = 5
         self.new_high_score = False
         filename = "highscore.pk"
         with open(filename,  "rb") as f:
@@ -132,35 +139,28 @@ class Snake:
             unpick = pickle.Unpickler(f)
             self.highscore = unpick.load()
 
-        length = 2
-        Tk().wm_withdraw() #to hide the main window
+        length = 5
         if self.new_high_score == True:
             yesno_message = f"You eat {self.apple_count} apples, You set a new highscore it is {self.highscore}, Do you want to Play again?"
+            #print("you set a new highscore")
         else:
             yesno_message = f"You eat {self.apple_count} apples, Your highscore is {self.highscore} Do you want to Play again?"
-        if messagebox.askyesno("", yesno_message) == True:
+            #print("you did not set a new highscore")
+        if messagebox.askyesno("",yesno_message) == True:
             self.apple_count = 0
-            self.parent_screen.fill((100, 100, 100))
-            self.count = 1
-            for i in range(length):
-                self.x[i] = 0
-                self.y[i] = 0
-                if self.count == 1:
-                    pygame.draw.rect(self.parent_screen, BLUE, pygame.Rect(self.x[i], self.y[i], SIZE, SIZE))
-                    self.count = 2
-                    #print(1)
-                elif self.count == 2:
-                    pygame.draw.rect(self.parent_screen, GREEN, pygame.Rect(self.x[i], self.y[i], SIZE, SIZE))
-                    self.count = 3
-                    #print(2)
-                elif self.count == 3:
-                    pygame.draw.rect(self.parent_screen, LIGHT_GREEN, pygame.Rect(self.x[i], self.y[i], SIZE, SIZE))
-                    self.count = 2
-                    #print(3)                
+            self.x[0] = starting_x
+            self.y[0] = starting_y
+            self.direction = "right"
+            for i in range(length-1,0,-1):
+                self.x[i] =  self.x[0] - SIZE*i
+                self.y[i] = self.y[0]
+            self.draw()   
+
         else:
             global running
             running = False
-            #print("exit")
+            print("exit")
+
 
     def auto_move(self):
         global length
@@ -184,14 +184,18 @@ class Snake:
             self.y[0] += SIZE
         
         if self.x[0] > windoes_x or self.x[0] < 0 or self.y[0] > windoes_y or self.y[0] < 0:
-           self.check_highscore()
+            self.play_again()
+            print('border')
 
         for i in range(2,length):
             if self.head.topleft == (self.x[i], self.y[i]):
-                self.check_highscore()                
-
+                self.play_again()
+                print('body')
+       
         self.head = pygame.Rect(self.x[0], self.y[0], SIZE, SIZE)
         #print(self.head.topleft, self.apple.apple_rect.topleft)
+
+
         if self.head.topleft == self.apple.apple_rect.topleft:
             self.apple.apple_move()
             self.ins_length()        
