@@ -14,8 +14,10 @@ BLUE = 0,0,255
 WHITE = 255,255,255
 clock=pygame.time.Clock()
 
+##Add a extra cord neet in the list for the new block of the snake when you eat a apple, just dont draw it
+
 SIZE = 35
-length = 5
+length = 5 + 1
 
 def calc_in_grid(num_to_round, grid_size):
     return round(num_to_round/grid_size)*grid_size
@@ -85,9 +87,10 @@ class Snake:
 
     def draw(self):
         global length
+        self.draw_length = length -1
         self.parent_screen.fill((100, 100, 100))
         self.count = 1
-        for i in range(length): #A for loop that draws a new segment of the snake
+        for i in range(self.draw_length): #A for loop that draws a new segment of the snake
            # print(self.x[i],self.y[i],i)
             if self.count == 1:
                 pygame.draw.rect(self.parent_screen, BLUE, pygame.Rect(self.x[i], self.y[i], SIZE, SIZE))
@@ -99,7 +102,7 @@ class Snake:
                 pygame.draw.rect(self.parent_screen, LIGHT_GREEN, pygame.Rect(self.x[i], self.y[i], SIZE, SIZE))
                 self.count = 2
         self.apple.apple_draw()
-        drawGrid()
+        #drawGrid()
         pygame.display.flip()
 
     #4 functions that set your direction based on what key you pressed
@@ -139,7 +142,7 @@ class Snake:
             unpick = pickle.Unpickler(f)
             self.highscore = unpick.load()
 
-        length = 5
+        length = 5 + 1
         if self.new_high_score == True:
             yesno_message = f"You eat {self.apple_count} apples, You set a new highscore it is {self.highscore}, Do you want to Play again?"
             #print("you set a new highscore")
@@ -234,7 +237,7 @@ class Game: #Crates a class for the actual game
                     running = False
 
             self.snake.auto_move()#calls the auto move function
-            clock.tick(8)#sets the in game tick speed
+            clock.tick(1)#sets the in game tick speed
 
 
 
