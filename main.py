@@ -14,16 +14,20 @@ BLUE = 0,0,255
 WHITE = 255,255,255
 clock=pygame.time.Clock()
 
-##Add a extra cord neet in the list for the new block of the snake when you eat a apple, just dont draw it
+##Check if the head is in the same spot as the last time you stwich direction and if so get the direction and dont let them move that way
 
-SIZE = 35
+##Fix somehow you can get out of the border
+
+##Clean up code, make it easier to understand and more readable
+
+SIZE = 50
 length = 5 + 1
 
 def calc_in_grid(num_to_round, grid_size):
     return round(num_to_round/grid_size)*grid_size
 
-windoes_x = calc_in_grid(1000,SIZE)
-windoes_y = calc_in_grid(800,SIZE)
+windoes_x = calc_in_grid(500,SIZE)
+windoes_y = calc_in_grid(500,SIZE)
 running = True
 def set_up_highscore():
     filename = "highscore.pk"
@@ -187,12 +191,12 @@ class Snake:
             self.y[0] += SIZE
         
         if self.x[0] > windoes_x or self.x[0] < 0 or self.y[0] > windoes_y or self.y[0] < 0:
-            self.play_again()
+            #self.play_again()
             print('border')
 
         for i in range(2,length):
             if self.head.topleft == (self.x[i], self.y[i]):
-                self.play_again()
+                #self.play_again()
                 print('body')
        
         self.head = pygame.Rect(self.x[0], self.y[0], SIZE, SIZE)
@@ -201,10 +205,12 @@ class Snake:
 
         if self.head.topleft == self.apple.apple_rect.topleft:
             self.apple.apple_move()
+            for i in range(length-1):
+                if self.x[i] == self.apple.apple_x and self.y[i] == self.apple.apple_y:
+                    self.apple.apple_move()
             self.ins_length()        
         self.draw()
         
-
 
         
 class Game: #Crates a class for the actual game
@@ -237,10 +243,7 @@ class Game: #Crates a class for the actual game
                     running = False
 
             self.snake.auto_move()#calls the auto move function
-            clock.tick(1)#sets the in game tick speed
-
-
-
+            clock.tick(8)#sets the in game tick speed
 
 
 game = Game()#makes the game class a varible 
