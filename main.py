@@ -26,8 +26,8 @@ length = 5 + 1
 def calc_in_grid(num_to_round, grid_size):
     return round(num_to_round/grid_size)*grid_size
 
-windoes_x = calc_in_grid(500,SIZE)
-windoes_y = calc_in_grid(500,SIZE)
+windoes_x = calc_in_grid(1000,SIZE)
+windoes_y = calc_in_grid(800,SIZE)
 running = True
 def set_up_highscore():
     filename = "highscore.pk"
@@ -81,6 +81,7 @@ class Snake:
             self.y[i] = self.y[0]
         self.head = pygame.Rect(self.x[0], self.y[0], SIZE, SIZE) #A local varibel for the head of the snakee
         self.apple = Apple(self.parent_screen)
+        self.move = False
 
     def ins_length(self):
         global length
@@ -111,20 +112,25 @@ class Snake:
 
     #4 functions that set your direction based on what key you pressed
     def move_left(self):
-        if self.direction != "right":
+        if self.direction != "right" and self.move == True:
             self.direction = "left"
+            self.move = False
+             
 
     def move_right(self):
-        if self.direction != "left":
+        if self.direction != "left" and self.move == True:
             self.direction = "right"
+            self.move = False
 
     def move_up(self):
-        if self.direction != "down":
+        if self.direction != "down" and self.move == True:
             self.direction = "up"
+            self.move = False
 
     def move_down(self):
-        if self.direction != "up":
+        if self.direction != "up" and self.move == True:
             self.direction = "down"
+            self.move = False
     #A function that is automaticly moving
     
     def play_again(self):
@@ -180,15 +186,19 @@ class Snake:
 
         if self.direction == "left":
             self.x[0] -= SIZE
+            self.move = True
            #  print(self.x[0])
         if self.direction == "right":
             self.x[0] += SIZE
+            self.move = True
            # print(self.x[0])
         if self.direction == "up":
             self.y[0] -= SIZE
+            self.move = True
            # print(self.y[0])
         if self.direction == "down":
             self.y[0] += SIZE
+            self.move = True
         
         if self.x[0] > windoes_x or self.x[0] < 0 or self.y[0] > windoes_y or self.y[0] < 0:
             #self.play_again()
