@@ -1,7 +1,7 @@
 import pygame
 from pygame.rect import *
 from pygame.locals import *
-
+import sys
 import apple
 def calc_in_grid(num_to_round, grid_size):
     return round(num_to_round/grid_size)*grid_size
@@ -129,7 +129,7 @@ class Snake:
 
         else:
             global running
-            running = False
+            sys.exit()
             print("exit")
 
 
