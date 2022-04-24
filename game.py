@@ -2,34 +2,35 @@ import pygame               #importing everything from pygame that I need
 from pygame.rect import *
 from pygame.locals import * 
 
-from tkinter import *
-from tkinter import messagebox
 import sys
-import random
+
 import pickle
 
-import apple
-
 import snake
+
+import json
+
 GREEN = 0, 255, 0 #setting the first colout of the snake
 LIGHT_GREEN = 0,150,0 #setting the second colout of the snake
 BLUE = 0,0,255
 WHITE = 255,255,255
 clock=pygame.time.Clock()
 
-##fix border wired values
-
 ##Clean up code, make it easier to understand and more readable
 
-SIZE = 35
-length = 5 + 1
+setting = open('settings.json',)
+setting_json = json.load(setting)
+win_x = setting_json['win_x']
+win_y = setting_json['win_y']
+SIZE = setting_json['size']
+length = setting_json['length']
+starting_x = setting_json['starting_x']
+starting_y = setting_json['starting_y'] 
 
 def calc_in_grid(num_to_round, grid_size):
     return round(num_to_round/grid_size)*grid_size
 
-windoes_x = calc_in_grid(1000,SIZE)
-windoes_y = calc_in_grid(800,SIZE)
-print(windoes_x, windoes_y)
+
 running = True
 def set_up_highscore():
     filename = "highscore.pk"
@@ -40,9 +41,7 @@ def set_up_highscore():
         unpick = pickle.Unpickler(f)
         print(unpick.load())
 
-surface = pygame.display.set_mode((windoes_x, windoes_y))#sets the windoes size
-starting_x = calc_in_grid(windoes_x/2,SIZE)
-starting_y = calc_in_grid(windoes_y/2,SIZE)
+surface = pygame.display.set_mode((win_x, win_x))#sets the windoes size
 
 def drawGrid():
     blockSize = 35 #Set the size of the grid block
