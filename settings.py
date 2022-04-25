@@ -1,11 +1,11 @@
 import json
-import calc
+from calc_for_json import calc_in_grid
 
-size = 50
-win_x = calc.calc_in_grid(1000,size)
-win_y = calc.calc_in_grid(800,size)
-starting_x = calc.calc_in_grid(win_x/2,size)
-starting_y = calc.calc_in_grid(win_y/2,size)
+size = 35
+win_x = calc_in_grid(1000,size)
+win_y = calc_in_grid(800,size)
+starting_x = calc_in_grid(win_x/2,size)
+starting_y = calc_in_grid(win_y/2,size)
 length = 4
 x = {
     "win_x" : win_x,

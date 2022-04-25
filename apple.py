@@ -17,7 +17,7 @@ class Apple:
         self.parent_screen = parent_screen
         self.apple_x = calc_in_grid(random.randint(SIZE,win_x)-SIZE,SIZE)
         self.apple_y = calc_in_grid(random.randint(SIZE,win_y)-SIZE,SIZE)
-        self.orgn_size_apple = pygame.image.load("apple.png").convert_alpha()
+        self.orgn_size_apple = pygame.image.load("Assests/apple.png").convert_alpha()
         self.apple = pygame.transform.scale(self.orgn_size_apple,(SIZE,SIZE))
         self.apple_rect = self.apple.get_rect(x=self.apple_x,y=self.apple_y)
     def apple_draw(self):

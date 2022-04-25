@@ -3,6 +3,7 @@ from pygame.rect import *
 from pygame.locals import *
 import sys
 import apple
+import fun
 import json
 def calc_in_grid(num_to_round, grid_size):
     return round(num_to_round/grid_size)*grid_size
@@ -68,7 +69,7 @@ class Snake:
                 pygame.draw.rect(self.parent_screen, LIGHT_GREEN, pygame.Rect(self.x[i], self.y[i], SIZE, SIZE))
                 self.count = 2
         self.apple.apple_draw()
-        #drawGrid()
+        fun.drawGrid(self.parent_screen,WHITE)
         pygame.display.flip()
 
     #4 functions that set your direction based on what key you pressed

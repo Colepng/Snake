@@ -3,12 +3,11 @@ from pygame.rect import *
 from pygame.locals import * 
 
 import sys
-
 import pickle
+import json
 
 import snake
-
-import json
+import fun
 
 GREEN = 0, 255, 0 #setting the first colout of the snake
 LIGHT_GREEN = 0,150,0 #setting the second colout of the snake
@@ -27,30 +26,9 @@ length = setting_json['length']
 starting_x = setting_json['starting_x']
 starting_y = setting_json['starting_y'] 
 
-def calc_in_grid(num_to_round, grid_size):
-    return round(num_to_round/grid_size)*grid_size
-
-
 running = True
-def set_up_highscore():
-    filename = "highscore.pk"
-    with open(filename,  "wb") as f:
-        highscore = 0
-        pickle.dump(highscore, f)
-    with open(filename,  "rb") as f:
-        unpick = pickle.Unpickler(f)
-        print(unpick.load())
 
 surface = pygame.display.set_mode((win_x, win_x))#sets the windoes size
-
-def drawGrid():
-    blockSize = 35 #Set the size of the grid block
-    for x in range(0, 1000, blockSize):
-        for y in range(0, 800, blockSize):
-            rect = pygame.Rect(x, y, blockSize, blockSize)
-            pygame.draw.rect(surface, WHITE, rect, 1)
-
-
 
 class game: #Crates a class for the actual game
     def __init__(self):
@@ -59,7 +37,7 @@ class game: #Crates a class for the actual game
         self.snake.draw()
     
     def run(self):# The games loop
-        #set_up_highscore()
+        fun.set_up_highscore()
         while snake.running:
             for event in pygame.event.get():#gets all events that are happening
                 if event.type == KEYDOWN:
