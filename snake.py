@@ -1,8 +1,10 @@
 import pygame
 from pygame.rect import *
 from pygame.locals import *
-
+import sys
 import apple
+import fun
+import json
 def calc_in_grid(num_to_round, grid_size):
     return round(num_to_round/grid_size)*grid_size
 
@@ -15,13 +17,16 @@ GREEN = 0, 255, 0 #setting the first colout of the snake
 LIGHT_GREEN = 0,150,0 #setting the second colout of the snake
 BLUE = 0,0,255
 WHITE = 255,255,255
-SIZE = 35
-windoes_x = calc_in_grid(1000, SIZE)
-windoes_y = calc_in_grid(800, SIZE)
-starting_x = calc_in_grid(windoes_x/2,SIZE)
-starting_y = calc_in_grid(windoes_y/2,SIZE)
 
-length = 5 + 1
+setting = open('settings.json',)
+setting_json = json.load(setting)
+win_x = setting_json['win_x']
+win_y = setting_json['win_y']
+SIZE = setting_json['size']
+starting_x = calc_in_grid(win_x/2,SIZE)
+starting_y = calc_in_grid(win_y/2,SIZE)
+length = setting_json['length']
+
 running = True
 class Snake:
     def __init__(self, parent_screen):
@@ -64,7 +69,7 @@ class Snake:
                 pygame.draw.rect(self.parent_screen, LIGHT_GREEN, pygame.Rect(self.x[i], self.y[i], SIZE, SIZE))
                 self.count = 2
         self.apple.apple_draw()
-        #drawGrid()
+        fun.drawGrid(self.parent_screen,WHITE)
         pygame.display.flip()
 
     #4 functions that set your direction based on what key you pressed
@@ -129,7 +134,7 @@ class Snake:
 
         else:
             global running
-            running = False
+            sys.exit()
             print("exit")
 
 
@@ -158,9 +163,9 @@ class Snake:
             self.y[0] += SIZE
             self.move = True
             
-        #print(self.x[0], windoes_x)
-        #print(self.y[0], windoes_y)
-        if self.x[0] > windoes_x - 35 or self.x[0] < 0 or self.y[0] > windoes_y - 35 or self.y[0] < 0:
+        #print(self.x[0], win_x)
+        #print(self.y[0], win_y)
+        if self.x[0] > win_x - 35 or self.x[0] < 0 or self.y[0] > win_y - 35 or self.y[0] < 0:
             self.play_again()
             print('border')
 
