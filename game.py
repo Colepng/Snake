@@ -32,7 +32,6 @@ surface = pygame.display.set_mode((win_x, win_x))#sets the windoes size
 
 class game: #Crates a class for the actual game
     def __init__(self):
-        #starts pygame
         self.snake = snake.Snake(surface)#gives the snake class its function and macking it a local varible, first argument is the surface and the second one is the legnth
         self.snake.draw()
     
