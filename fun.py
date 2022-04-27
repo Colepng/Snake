@@ -19,8 +19,9 @@ def set_up_highscore():
         unpick = pickle.Unpickler(f)
         print(unpick.load())
 
-def drawGrid(surface,colour):
+def drawGrid(surface,colour, size):
     blockSize = size#Set the size of the grid block
+    #print(blockSize)
     for x in range(0, 1000, blockSize):
         for y in range(0, 800, blockSize):
             rect = pygame.Rect(x, y, blockSize, blockSize)
