@@ -1,8 +1,8 @@
 {
-    "win_x": 957,
-    "win_y": 783,
-    "starting_x": 522,
-    "starting_y": 348,
-    "size": 87,
+    "win_x": 1000,
+    "win_y": 800,
+    "starting_x": 500,
+    "starting_y": 400,
+    "size": 20,
     "length": 6
 }

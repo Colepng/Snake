@@ -66,7 +66,7 @@ class Snake():
                 pygame.draw.rect(self.parent_screen, LIGHT_GREEN, pygame.Rect(self.x[i], self.y[i], self.SIZE, self.SIZE))
                 self.count = 2
         self.apple.apple_draw()
-        drawGrid(self.parent_screen,WHITE, size=self.SIZE)
+        #drawGrid(self.parent_screen,WHITE, size=self.SIZE)
         pygame.display.flip()
 
     #4 functions that set your direction based on what key you pressed

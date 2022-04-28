@@ -1,4 +1,3 @@
-from time import sleep
 import pygame 
 from pygame.locals import *
 from pygame.rect import *
@@ -6,7 +5,6 @@ import json
 
 from game import game
 import setting_menu
-import snake
 
 pygame.init()
 count = 1
