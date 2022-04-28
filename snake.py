@@ -3,10 +3,8 @@ from pygame.rect import *
 from pygame.locals import *
 import sys
 import apple
-import fun
+from fun import calc_in_grid, drawGrid
 import json
-def calc_in_grid(num_to_round, grid_size):
-    return round(num_to_round/grid_size)*grid_size
 
 import pickle
 
@@ -18,58 +16,57 @@ LIGHT_GREEN = 0,150,0 #setting the second colout of the snake
 BLUE = 0,0,255
 WHITE = 255,255,255
 
-setting = open('settings.json',)
-setting_json = json.load(setting)
-win_x = setting_json['win_x']
-win_y = setting_json['win_y']
-SIZE = setting_json['size']
-starting_x = calc_in_grid(win_x/2,SIZE)
-starting_y = calc_in_grid(win_y/2,SIZE)
-length = setting_json['length']
-
 running = True
-class Snake:
-    def __init__(self, parent_screen):
-        global length
+class Snake():
+
+    def __init__(self, parent_screen, length, size, win_x, win_y, starting_x, starting_y):
+        self.win_x = win_x
+        self.win_y = win_y
+        self.starting_x = starting_x
+        self.starting_y = starting_y
+        self.SIZE = size
+        self.length = length
         self.apple_count = 0
         self.parent_screen = parent_screen #A local varibel for the surface
-        self.x = [starting_x]*length 
-        self.y = [starting_y]*length
-        self.x[0] = starting_x
-        self.y[0] = starting_y
+        self.x = [self.starting_x]*self.length 
+        self.y = [self.starting_y]*self.length
+        self.x[0] = self.starting_x
+        self.y[0] = self.starting_y
         self.direction = "right"
-        for i in range(length-1,0,-1):
-            self.x[i] =  self.x[0] - SIZE*i
+        for i in range(self.length-1,0,-1):
+            self.x[i] =  self.x[0] - self.SIZE*i
             self.y[i] = self.y[0]
-        self.head = pygame.Rect(self.x[0], self.y[0], SIZE, SIZE) #A local varibel for the head of the snakee
-        self.apple = apple.Apple(self.parent_screen)
+        self.head = pygame.Rect(self.x[0], self.y[0], self.SIZE, self.SIZE) #A local varibel for the head of the snakee
+        self.apple = apple.Apple(self.parent_screen, self.SIZE, self.win_x, self.win_y)
         self.move = False
+    
+
+
+
 
     def ins_length(self):
-        global length
-        length += 1
+        self.length += 1
         self.x.append(-1)
         self.y.append(-1)
         self.apple_count += 1
 
     def draw(self):
-        global length
-        self.draw_length = length -1
+        self.draw_length = self.length -1
         self.parent_screen.fill((100, 100, 100))
         self.count = 1
         for i in range(self.draw_length): #A for loop that draws a new segment of the snake
            # print(self.x[i],self.y[i],i)
             if self.count == 1:
-                pygame.draw.rect(self.parent_screen, BLUE, pygame.Rect(self.x[i], self.y[i], SIZE, SIZE))
+                pygame.draw.rect(self.parent_screen, BLUE, pygame.Rect(self.x[i], self.y[i], self.SIZE, self.SIZE))
                 self.count = 2
             elif self.count == 2:
-                pygame.draw.rect(self.parent_screen, GREEN, pygame.Rect(self.x[i], self.y[i], SIZE, SIZE))
+                pygame.draw.rect(self.parent_screen, GREEN, pygame.Rect(self.x[i], self.y[i], self.SIZE, self.SIZE))
                 self.count = 3
             elif self.count == 3:
-                pygame.draw.rect(self.parent_screen, LIGHT_GREEN, pygame.Rect(self.x[i], self.y[i], SIZE, SIZE))
+                pygame.draw.rect(self.parent_screen, LIGHT_GREEN, pygame.Rect(self.x[i], self.y[i], self.SIZE, self.SIZE))
                 self.count = 2
         self.apple.apple_draw()
-        fun.drawGrid(self.parent_screen,WHITE)
+        #drawGrid(self.parent_screen,WHITE, size=self.SIZE)
         pygame.display.flip()
 
     #4 functions that set your direction based on what key you pressed
@@ -96,7 +93,6 @@ class Snake:
     #A function that is automaticly moving
     
     def play_again(self):
-        global length
         #length = 5
         self.new_high_score = False
         filename = "highscore.pk"
@@ -114,7 +110,7 @@ class Snake:
             unpick = pickle.Unpickler(f)
             self.highscore = unpick.load()
 
-        length = 5 + 1
+        self.length = 5 + 1
         if self.new_high_score == True:
             yesno_message = f"You eat {self.apple_count} apples, You set a new highscore it is {self.highscore}, Do you want to Play again?"
             #print("you set a new highscore")
@@ -123,11 +119,11 @@ class Snake:
             #print("you did not set a new highscore")
         if messagebox.askyesno("",yesno_message) == True:
             self.apple_count = 0
-            self.x[0] = starting_x
-            self.y[0] = starting_y
+            self.x[0] = self.starting_x
+            self.y[0] = self.starting_y
             self.direction = "right"
-            for i in range(length-1,0,-1):
-                self.x[i] =  self.x[0] - SIZE*i
+            for i in range(self.length-1,0,-1):
+                self.x[i] =  self.x[0] - self.SIZE*i
                 self.y[i] = self.y[0]
             self.apple.apple_move()
             self.draw()   
@@ -139,8 +135,7 @@ class Snake:
 
 
     def auto_move(self):
-        global length
-        for i in range(length-1,0,-1):
+        for i in range(self.length-1,0,-1):
             #if self.x[i] == 0
                 self.x[i] =  self.x[i - 1]
                 #print(self.x[i])
@@ -148,39 +143,40 @@ class Snake:
                 #print(self.y[i])
 
         if self.direction == "left":
-            self.x[0] -= SIZE
+            self.x[0] -= self.SIZE
             self.move = True
            #  print(self.x[0])
         if self.direction == "right":
-            self.x[0] += SIZE
+            self.x[0] += self.SIZE
             self.move = True
            # print(self.x[0])
         if self.direction == "up":
-            self.y[0] -= SIZE
+            self.y[0] -= self.SIZE
             self.move = True
            # print(self.y[0])
         if self.direction == "down":
-            self.y[0] += SIZE
+            self.y[0] += self.SIZE
             self.move = True
             
         #print(self.x[0], win_x)
         #print(self.y[0], win_y)
-        if self.x[0] > win_x - 35 or self.x[0] < 0 or self.y[0] > win_y - 35 or self.y[0] < 0:
+        if self.x[0] > self.win_x - self.SIZE or self.x[0] < 0 or self.y[0] > self.win_y - self.SIZE or self.y[0] < 0:
             self.play_again()
             print('border')
 
-        for i in range(2,length):
+        for i in range(2,self.length):
             if self.head.topleft == (self.x[i], self.y[i]):
                 self.play_again()
                 print('body')
        
-        self.head = pygame.Rect(self.x[0], self.y[0], SIZE, SIZE)
+        self.head = pygame.Rect(self.x[0], self.y[0], self.SIZE, self.SIZE)
         #print(self.head.topleft, self.apple.apple_rect.topleft)
 
         if self.head.topleft == self.apple.apple_rect.topleft:
             self.apple.apple_move()
-            for i in range(length-1):
+            for i in range(self.length-1):
                 if self.x[i] == self.apple.apple_x and self.y[i] == self.apple.apple_y:
                     self.apple.apple_move()
             self.ins_length()        
         self.draw()
+        print(self.starting_x, self.starting_y)
