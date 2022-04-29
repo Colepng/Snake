@@ -24,6 +24,7 @@ class Snake():
         self.win_y = win_y
         self.starting_x = starting_x
         self.starting_y = starting_y
+        self.staring_length = length
         self.SIZE = size
         self.length = length
         self.apple_count = 0
@@ -32,7 +33,7 @@ class Snake():
         self.y = [self.starting_y]*self.length
         self.x[0] = self.starting_x
         self.y[0] = self.starting_y
-        self.direction = "right"
+        self.direction = 'right'
         for i in range(self.length-1,0,-1):
             self.x[i] =  self.x[0] - self.SIZE*i
             self.y[i] = self.y[0]
@@ -93,7 +94,6 @@ class Snake():
     #A function that is automaticly moving
     
     def play_again(self):
-        #length = 5
         self.new_high_score = False
         filename = "highscore.pk"
         with open(filename,  "rb") as f:
@@ -110,7 +110,7 @@ class Snake():
             unpick = pickle.Unpickler(f)
             self.highscore = unpick.load()
 
-        self.length = 5 + 1
+        self.length = self.staring_length
         if self.new_high_score == True:
             yesno_message = f"You eat {self.apple_count} apples, You set a new highscore it is {self.highscore}, Do you want to Play again?"
             #print("you set a new highscore")
@@ -131,7 +131,7 @@ class Snake():
         else:
             global running
             sys.exit()
-            print("exit")
+    
 
 
     def auto_move(self):
@@ -157,9 +157,9 @@ class Snake():
         if self.direction == "down":
             self.y[0] += self.SIZE
             self.move = True
-            
-        #print(self.x[0], win_x)
-        #print(self.y[0], win_y)
+
+
+
         if self.x[0] > self.win_x - self.SIZE or self.x[0] < 0 or self.y[0] > self.win_y - self.SIZE or self.y[0] < 0:
             self.play_again()
             print('border')
@@ -170,7 +170,7 @@ class Snake():
                 print('body')
        
         self.head = pygame.Rect(self.x[0], self.y[0], self.SIZE, self.SIZE)
-        #print(self.head.topleft, self.apple.apple_rect.topleft)
+ 
 
         if self.head.topleft == self.apple.apple_rect.topleft:
             self.apple.apple_move()
@@ -179,4 +179,3 @@ class Snake():
                     self.apple.apple_move()
             self.ins_length()        
         self.draw()
-        print(self.starting_x, self.starting_y)
