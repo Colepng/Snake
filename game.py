@@ -3,9 +3,11 @@ from pygame.rect import *
 from pygame.locals import * 
 
 import sys
-import json
+import time
+from pause_menu import pause_menu
 
 import snake
+import setting_menu
 
 GREEN = 0, 255, 0 #setting the first colout of the snake
 LIGHT_GREEN = 0,150,0 #setting the second colout of the snake
@@ -30,12 +32,14 @@ class game: #Crates a class for the actual game
         self.snake = snake.Snake(surface, length, size, win_x, win_y, starting_x, starting_y)
         self.snake.draw()
         #print(pygame.display.get_window_size())
+        snake.running = True
         while snake.running:
             for event in pygame.event.get():#gets all events that are happening
                 #print(pygame.display.get_window_size())
                 if event.type == KEYDOWN:
                     if event.key == K_ESCAPE:#if the esc key is press it stop the loop from running
-                        return print('main menu')
+                        pause_menu(surface, win_x, win_y, starting_x, starting_y)               
+                            
                     if event.key == K_LEFT or event.key == K_a:
                         self.snake.move_left()
 
@@ -47,6 +51,7 @@ class game: #Crates a class for the actual game
 
                     if event.key == K_DOWN or event.key == K_s:
                         self.snake.move_down()
+            
 
                 if event.type == QUIT:#if the user press the x at the top of the screen it will close the program
                     sys.exit()
