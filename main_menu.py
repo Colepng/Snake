@@ -3,6 +3,7 @@ from pygame.locals import *
 from pygame.rect import *
 
 import json
+import sys
 
 from game import game
 import setting_menu
@@ -72,3 +73,6 @@ while 1:
         if event.type == MOUSEBUTTONDOWN and rect.collidepoint(event.pos):
                 game().run(screen, length,size, win_x, win_y, starting_x, starting_y)#Runs the run fuctions
                 count = 2
+
+        if event.type == QUIT:
+            sys.exit()
