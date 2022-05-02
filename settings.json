@@ -1,8 +1,11 @@
 {
-    "win_x": 1000,
-    "win_y": 800,
-    "starting_x": 500,
-    "starting_y": 400,
-    "size": 10,
-    "length": 20
+    "win_x": 1015,
+    "win_y": 805,
+    "starting_x": 490,
+    "starting_y": 420,
+    "size": 35,
+    "length": 6,
+    "head_colour": "#320E3B",
+    "snake_colour_1": "#EDF4ED",
+    "snake_colour_2": "#4CB963"
 }
