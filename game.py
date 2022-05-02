@@ -3,11 +3,11 @@ from pygame.rect import *
 from pygame.locals import * 
 
 import sys
-import time
+
 from pause_menu import pause_menu
 
 import snake
-import setting_menu
+import fun
 
 GREEN = 0, 255, 0 #setting the first colout of the snake
 LIGHT_GREEN = 0,150,0 #setting the second colout of the snake

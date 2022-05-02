@@ -2,8 +2,9 @@ import pygame
 from pygame.rect import *
 from pygame.locals import *
 import sys
-import apple
+import apple as apple
 from fun import calc_in_grid, drawGrid
+from play_again import play_again
 import json
 
 import pickle
@@ -93,46 +94,56 @@ class Snake():
             self.move = False
     #A function that is automaticly moving
     
-    def play_again(self):
-        self.new_high_score = False
-        filename = "highscore.pk"
-        with open(filename,  "rb") as f:
-            unpick = pickle.Unpickler(f)
-            old_highscore = unpick.load()
-            #print(old_highscore)
-            if old_highscore < self.apple_count:
-                #print("trues")
-                with open(filename,  "wb") as f:
-                    pickle.dump(self.apple_count, f)
-                    self.new_high_score = True
-                    #print("tuerer")
-        with open(filename,  "rb") as f:
-            unpick = pickle.Unpickler(f)
-            self.highscore = unpick.load()
+    # def play_again(self):
+    #     self.new_high_score = False
+    #     filename = "highscore.pk"
+    #     with open(filename,  "rb") as f:
+    #         unpick = pickle.Unpickler(f)
+    #         old_highscore = unpick.load()
+    #         #print(old_highscore)
+    #         if old_highscore < self.apple_count:
+    #             #print("trues")
+    #             with open(filename,  "wb") as f:
+    #                 pickle.dump(self.apple_count, f)
+    #                 self.new_high_score = True
+    #                 #print("tuerer")
+    #     with open(filename,  "rb") as f:
+    #         unpick = pickle.Unpickler(f)
+    #         self.highscore = unpick.load()
 
-        self.length = self.staring_length
-        if self.new_high_score == True:
-            yesno_message = f"You eat {self.apple_count} apples, You set a new highscore it is {self.highscore}, Do you want to Play again?"
-            #print("you set a new highscore")
-        else:
-            yesno_message = f"You eat {self.apple_count} apples, Your highscore is {self.highscore} Do you want to Play again?"
-            #print("you did not set a new highscore")
-        if messagebox.askyesno("",yesno_message) == True:
-            self.apple_count = 0
-            self.x[0] = self.starting_x
-            self.y[0] = self.starting_y
-            self.direction = "right"
-            for i in range(self.length-1,0,-1):
-                self.x[i] =  self.x[0] - self.SIZE*i
-                self.y[i] = self.y[0]
-            self.apple.apple_move()
-            self.draw()   
+    #     self.length = self.staring_length
+    #     if self.new_high_score == True:
+    #         yesno_message = f"You eat {self.apple_count} apples, You set a new highscore it is {self.highscore}, Do you want to Play again?"
+    #         #print("you set a new highscore")
+    #     else:
+    #         yesno_message = f"You eat {self.apple_count} apples, Your highscore is {self.highscore} Do you want to Play again?"
+    #         #print("you did not set a new highscore")
+    #     if messagebox.askyesno("",yesno_message) == True:
+    #         self.apple_count = 0
+    #         self.x[0] = self.starting_x
+    #         self.y[0] = self.starting_y
+    #         self.direction = "right"
+    #         for i in range(self.length-1,0,-1):
+    #             self.x[i] =  self.x[0] - self.SIZE*i
+    #             self.y[i] = self.y[0]
+    #         self.apple.apple_move()
+    #         self.draw()   
 
-        else:
-            global running
-            sys.exit()
+        # else:
+        #     global running
+        #     sys.exit()
     
-
+    def reset(self):
+        self.length = self.staring_length
+        self.apple_count = 0
+        self.x[0] = self.starting_x
+        self.y[0] = self.starting_y
+        self.direction = "right"
+        for i in range(self.length-1,0,-1):
+            self.x[i] =  self.x[0] - self.SIZE*i
+            self.y[i] = self.y[0]
+        self.apple.apple_move()
+        self.draw() 
 
     def auto_move(self):
         for i in range(self.length-1,0,-1):
@@ -161,12 +172,18 @@ class Snake():
 
 
         if self.x[0] > self.win_x - self.SIZE or self.x[0] < 0 or self.y[0] > self.win_y - self.SIZE or self.y[0] < 0:
-            self.play_again()
+            if play_again(self.parent_screen,self.starting_x,self.starting_y,500,400, self.apple_count) == True:
+                self.reset()
+            else:
+                sys.exit()
             print('border')
 
         for i in range(2,self.length):
             if self.head.topleft == (self.x[i], self.y[i]):
-                self.play_again()
+                if play_again(self.parent_screen,self.starting_x,self.starting_y,500,400, self.apple_count) == True:
+                    self.reset()
+                else:
+                    sys.exit()
                 print('body')
        
         self.head = pygame.Rect(self.x[0], self.y[0], self.SIZE, self.SIZE)

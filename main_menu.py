@@ -5,7 +5,7 @@ from pygame.rect import *
 import json
 import sys
 
-from game import game
+from game import game as game
 import setting_menu
 
 pygame.init()

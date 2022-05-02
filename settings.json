@@ -3,6 +3,6 @@
     "win_y": 800,
     "starting_x": 500,
     "starting_y": 400,
-    "size": 50,
-    "length": 3
+    "size": 10,
+    "length": 20
 }
