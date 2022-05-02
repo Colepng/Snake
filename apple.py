@@ -15,7 +15,7 @@ class Apple:
         self.orgn_size_apple = pygame.image.load("Assests/apple.png").convert_alpha()
         self.apple = pygame.transform.scale(self.orgn_size_apple,(self.SIZE,self.SIZE))
         self.apple_rect = self.apple.get_rect(x=self.apple_x,y=self.apple_y)
-        print(f"apple size{self.SIZE}")
+        #print(f"apple size{self.SIZE}")
     def apple_draw(self):
         self.parent_screen.blit(self.apple, self.apple_rect)
 
