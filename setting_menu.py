@@ -102,6 +102,9 @@ def run():
                         active = False
 
                 if apply_rect.collidepoint(event.pos):
+                    
+                    snake_colour_2_input_text = user_text[4].split(',')
+                    snake_color_2_list_int = [int(x) for x in snake_colour_2_input_text]
 
                     snake_colour_1_input_text = user_text[3].split(',')
                     snake_color_1_list_int = [int(x) for x in snake_colour_1_input_text]
@@ -109,7 +112,7 @@ def run():
                     head_colour_input_text_list_str = user_text[2].split(',')
                     head_color_list_int = [int(x) for x in head_colour_input_text_list_str]
 
-                    settings.write(size=int(user_text[0]), length=int(user_text[1]), head_colour = head_color_list_int, snake_colour_1=snake_color_1_list_int)
+                    settings.write(size=int(user_text[0]), length=int(user_text[1]), head_colour = head_color_list_int, snake_colour_1=snake_color_1_list_int, snake_colour_2=snake_color_2_list_int)
                     return print('exit')
     
             if event.type == KEYDOWN and active == True:
