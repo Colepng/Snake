@@ -22,10 +22,10 @@ class game: #Crates a class for the actual game
         #gives the snake class its function and macking it a local varible, first argument is the surface and the second one is the legnth
         
     
-    def run(self, surface, length, size, win_x, win_y, starting_x, starting_y, head_colour, snake_colour_1, snake_colour_2):# The games loop
+    def run(self, surface, length, size, win_x, win_y, starting_x, starting_y, head_colour, snake_colour_1, snake_colour_2,if_hex):# The games loop
         #sets the windoes size
         #fun.set_up_highscore()
-        self.snake = snake.Snake(surface, length, size, win_x, win_y, starting_x, starting_y, head_colour, snake_colour_1, snake_colour_2)
+        self.snake = snake.Snake(surface, length, size, win_x, win_y, starting_x, starting_y, head_colour, snake_colour_1, snake_colour_2,if_hex)
         self.snake.draw()
         #print(pygame.display.get_window_size())
         snake.running = True

@@ -1,11 +1,24 @@
 {
-    "win_x": 1015,
-    "win_y": 805,
-    "starting_x": 490,
-    "starting_y": 420,
-    "size": 35,
-    "length": 6,
-    "head_colour": "#320E3B",
-    "snake_colour_1": "#EDF4ED",
-    "snake_colour_2": "#4CB963"
+    "win_x": 1000,
+    "win_y": 800,
+    "starting_x": 500,
+    "starting_y": 400,
+    "size": 50,
+    "length": 10,
+    "head_colour": [
+        123,
+        123,
+        45
+    ],
+    "snake_colour_1": [
+        23,
+        54,
+        103
+    ],
+    "snake_colour_2": [
+        0,
+        150,
+        0
+    ],
+    "if_hex": false
 }

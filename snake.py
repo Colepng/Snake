@@ -19,10 +19,15 @@ running = True
 
 class Snake():
 
-    def __init__(self, parent_screen, length, size, win_x, win_y, starting_x, starting_y, head_colour, snake_colour_1, snake_colour_2):
-        self.head_colour = pygame.Color(head_colour)
-        self.snake_colour_1 = pygame.Color(snake_colour_1)
-        self.snake_colour_2 = pygame.Color(snake_colour_2)
+    def __init__(self, parent_screen, length, size, win_x, win_y, starting_x, starting_y, head_colour, snake_colour_1, snake_colour_2, if_hex):
+        if if_hex == True:
+            self.head_colour = pygame.Color(head_colour)
+            self.snake_colour_1 = pygame.Color(snake_colour_1)
+            self.snake_colour_2 = pygame.Color(snake_colour_2)
+        elif if_hex == False:
+            self.head_colour = head_colour
+            self.snake_colour_1 = snake_colour_1
+            self.snake_colour_2 = snake_colour_2
         self.win_x = win_x
         self.win_y = win_y
         self.starting_x = starting_x

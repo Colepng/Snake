@@ -28,8 +28,7 @@ rect = pygame.Rect(win_x/2 - 200, win_y/2 - 50, 400, 100,)
 font = pygame.font.Font(pygame.font.get_default_font(), 75)
 text = font.render('PLAY', True, BLACK)
 text_rect = text.get_rect()
-text_rect = (rect.left + ((rect.width - text.get_width())/2),
-             rect.centery - text.get_height()/2)
+text_rect = (rect.left + ((rect.width - text.get_width())/2), rect.centery - text.get_height()/2)
 
 
 # Loads the setting icon, sets its size and gets a rect for its
@@ -57,6 +56,7 @@ while 1:
         head_colour = setting_file_loaded['head_colour']
         snake_colour_1 = setting_file_loaded['snake_colour_1']
         snake_colour_2 = setting_file_loaded['snake_colour_2']
+        if_hex = setting_file_loaded['if_hex']
         screen = pygame.display.set_mode((win_x, win_y))
         #print(pygame.display.get_window_size(), win_x, win_y)
 
@@ -69,7 +69,7 @@ while 1:
             print(pygame.display.list_modes())
 
         if event.type == MOUSEBUTTONDOWN and rect.collidepoint(event.pos):
-            game().run(screen, length, size, win_x, win_y,starting_x, starting_y,head_colour,snake_colour_1,snake_colour_2)  # Runs the run fuctions
+            game().run(screen, length, size, win_x, win_y,starting_x, starting_y,head_colour,snake_colour_1,snake_colour_2,if_hex)  # Runs the run fuctions
             count = 2
 
         if event.type == QUIT:

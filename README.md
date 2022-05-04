@@ -26,4 +26,5 @@ resouces
     How to check a varivles type
         https://www.delftstack.com/howto/python/python-check-variable-type/#:~:text=variable%20in%20Python.-,Use%20the%20type()%20Function%20to%20Check%20Variable%20Type%20in,return%20the%20variable%20data%20type.
 
+    Tuple converting into a string and back
 
