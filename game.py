@@ -22,7 +22,7 @@ class game: #Crates a class for the actual game
         #gives the snake class its function and macking it a local varible, first argument is the surface and the second one is the legnth
         
     
-    def run(self, surface, length, size, win_x, win_y, starting_x, starting_y, head_colour, snake_colour_1, snake_colour_2,if_hex):# The games loop
+    def run(self, surface, length, size, win_x, win_y, starting_x, starting_y, head_colour, snake_colour_1, snake_colour_2,if_hex, speed):# The games loop
         #sets the windoes size
         #fun.set_up_highscore()
         self.snake = snake.Snake(surface, length, size, win_x, win_y, starting_x, starting_y, head_colour, snake_colour_1, snake_colour_2,if_hex)
@@ -53,5 +53,5 @@ class game: #Crates a class for the actual game
                     sys.exit()
 
             self.snake.auto_move()#calls the auto move function
-            clock.tick(8)#sets the in game tick speed
+            clock.tick(speed)#sets the in game tick speed
 

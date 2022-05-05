@@ -57,6 +57,7 @@ while 1:
         snake_colour_1 = setting_file_loaded['snake_colour_1']
         snake_colour_2 = setting_file_loaded['snake_colour_2']
         if_hex = setting_file_loaded['if_hex']
+        speed = setting_file_loaded['speed']
         screen = pygame.display.set_mode((win_x, win_y))
         #print(pygame.display.get_window_size(), win_x, win_y)
 
@@ -69,7 +70,7 @@ while 1:
             print(pygame.display.list_modes())
 
         if event.type == MOUSEBUTTONDOWN and rect.collidepoint(event.pos):
-            game().run(screen, length, size, win_x, win_y,starting_x, starting_y,head_colour,snake_colour_1,snake_colour_2,if_hex)  # Runs the run fuctions
+            game().run(screen, length, size, win_x, win_y,starting_x, starting_y,head_colour,snake_colour_1,snake_colour_2,if_hex, speed)  # Runs the run fuctions
             count = 2
 
         if event.type == QUIT:
