@@ -9,10 +9,6 @@ from pause_menu import pause_menu
 import snake
 import fun
 
-GREEN = 0, 255, 0 #setting the first colout of the snake
-LIGHT_GREEN = 0,150,0 #setting the second colout of the snake
-BLUE = 0,0,255
-WHITE = 255,255,255
 clock=pygame.time.Clock()
 
 ##Clean up code, make it easier to understand and more readable
@@ -26,10 +22,10 @@ class game: #Crates a class for the actual game
         #gives the snake class its function and macking it a local varible, first argument is the surface and the second one is the legnth
         
     
-    def run(self, surface, length, size, win_x, win_y, starting_x, starting_y):# The games loop
+    def run(self, surface, length, size, win_x, win_y, starting_x, starting_y, head_colour, snake_colour_1, snake_colour_2,if_hex, speed):# The games loop
         #sets the windoes size
         #fun.set_up_highscore()
-        self.snake = snake.Snake(surface, length, size, win_x, win_y, starting_x, starting_y)
+        self.snake = snake.Snake(surface, length, size, win_x, win_y, starting_x, starting_y, head_colour, snake_colour_1, snake_colour_2,if_hex)
         self.snake.draw()
         #print(pygame.display.get_window_size())
         snake.running = True
@@ -57,5 +53,5 @@ class game: #Crates a class for the actual game
                     sys.exit()
 
             self.snake.auto_move()#calls the auto move function
-            clock.tick(8)#sets the in game tick speed
+            clock.tick(speed)#sets the in game tick speed
 
