@@ -26,5 +26,9 @@ resouces
     How to check a varivles type
         https://www.delftstack.com/howto/python/python-check-variable-type/#:~:text=variable%20in%20Python.-,Use%20the%20type()%20Function%20to%20Check%20Variable%20Type%20in,return%20the%20variable%20data%20type.
 
-    Tuple converting into a string and back
+    Sockets and stuff
+        https://stackoverflow.com/questions/27241804/sending-a-file-over-tcp-sockets-in-python
+        https://stackoverflow.com/questions/43420075/python-socket-not-receiving-without-sending
+        https://www.thepythoncode.com/article/send-receive-files-using-sockets-python
+        
 

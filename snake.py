@@ -47,8 +47,7 @@ class Snake():
             self.y[i] = self.y[0]
         # A local varibel for the head of the snakee
         self.head = pygame.Rect(self.x[0], self.y[0], self.SIZE, self.SIZE)
-        self.apple = apple.Apple(
-            self.parent_screen, self.SIZE, self.win_x, self.win_y)
+        self.apple = apple.Apple(self.parent_screen, self.SIZE, self.win_x, self.win_y)
         self.move = False
 
     def ins_length(self):
