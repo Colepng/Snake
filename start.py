@@ -1,9 +1,10 @@
-import time
 import main_menu
 import socket
 import sqlite3 as sql
 from types import NoneType
 import urllib.request
+
+
 
 def connect(host='http://google.com'):
     try:
@@ -21,23 +22,27 @@ if connect():
     server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
     server.connect((HOST,PORT))
-    # server.sendall(b"Hello world")
-    run = True
-    with open("Snake.sqlite3","wb") as f:
-        while run:
-            f_reading = server.recv(4096)
-            # print(f_reading)
-            if not f_reading:
-                # print("not reading")
-                break
+    # # # # # # # # server.sendall(b"Hello world")
+    # # # # # # # run = True
+    # # # # # # # with open("Snake.sqlite3","wb") as f:
+    # # # # # # #     while run:
+    # # # # # # #         f_reading = server.recv(4096)
+    # # # # # # #         # print(f_reading)
+    # # # # # # #         if not f_reading:
+    # # # # # # #             # print("not reading")
+    # # # # # # #             break
 
-            f.write(f_reading)
+    # # # # # # #         f.write(f_reading)
 
-    #server.shutdown(socket.SHUT_WR)
+    # # # # # # # # server.shutdown(socket.SHUT_WR)
+
 else:
     print("Cant connect to the server with out an internet connection")
 
+def update_local_database():
 
+    server.sendall(b"Hello world")
+    server.close()
 
 def check_username(username,password):
     con = sql.connect("Snake.sqlite3")
@@ -56,40 +61,46 @@ def check_username(username,password):
 
 
 
-def create_user():
+def create_user(username, public_username):
 
     con = sql.connect("Snake.sqlite3")
     cur = con.cursor()
 
-    username = input("input a username ")
-    public_username = input("input a public username ")
     password = input("input a password ")
     highscore = input("input a highscore ")
-    while 1:
-        
-        get_username = f"SELECT username FROM Snake WHERE username = '{username}';"
-        cur.execute(get_username)
-        fetch = cur.fetchall()
-        print(type(fetch))
-        print(fetch)
-        if type(fetch) != NoneType:
-            print("user name taken")
-            username = input("input a differnt username ")
-        else:
-            print("username not taken")
-            add_new_user = f"INSERT INTO Snake VALUES ('{username}','{password}','{public_username}','{highscore}')"
-            cur.execute(add_new_user)
-            con.commit()
-            con.close()
-            break
+    for i in range(1):
+        # online database code
+        # print(f"create_user {username} {public_username} {password} {0}")
+        server.sendall(f"create_user {username} {public_username} {password} {0}".encode("utf-8"))#in the furture replcace the zero with the local highscore
+
+
+        # local database code 
+        # get_username = f"SELECT username FROM Snake WHERE username = '{username}';"
+        # cur.execute(get_username)
+        # fetch = cur.fetchall()
+        # print(type(fetch))
+        # print(fetch)
+        # if type(fetch) != NoneType:
+        #     print("user name taken")
+        #     username = input("input a differnt username ")
+        # else:
+        #     print("username not taken")
+        #     add_new_user = f"INSERT INTO Snake VALUES ('{username}','{password}','{public_username}','{highscore}')"
+        #     cur.execute(add_new_user)
+        #     con.commit()
+        #     con.close()
+        #     break
 
 account_yes_no = input("Do you have an account? ")
 
 if account_yes_no.lower() == "no":
 
         if input("Would you like to make an account ").lower() == "yes":
-            if connect(): create_user()
-            else: print("Can not make an account with no internect connection")
+            if connect():
+                username = input("input a username ")
+                public_username = input("input a public username ")
+                create_user(username, public_username)
+            else: print("You can't not make an account with no internect connection")
 
         else: print("Ok you can make an account and anytime to get acces to your progress anywhere and acces the leaderboarsd")
 
@@ -101,12 +112,72 @@ elif account_yes_no.lower() == "yes":
         if_password = check_username(input("Enter your username? "),input("Enter your password? "))
         print("testing")
     print("username and password correct welcome")
-    # print("Ok you can make an account and anytime to get acces to your progress anywhere and acces the leaderboarsd")
+
+while 1:
+    data = server.recv(1024)
+
+    if data != None and data != b'':
+        print(data)
+        data_decoded = data.decode()
+        print(data_decoded)
+        data_split = data_decoded.split(" ")
+        print(data_split)
+        command = data_split[0]
+        print(command)
+
+        if command == "username":
+            good_or_bad = data_split[1]
+
+            if good_or_bad == "good":
+                print("username good")
+            else:
+                print("username bad")
+                while 1:
+                    username = input("username taken please input a new username")
+                    server.send(f"check_username {username}".encode("utf-8"))
+                    pass
+
+        elif command == "public_username":
+            good_or_bad = data_split[1]
+
+            if good_or_bad == "good":
+                print("public username good")
+            else:
+                print("public username bad")
+        
+        elif command == "invaild_valid":
+            username_good_bad = data_split[1]
+            p_username_good_bad = data_split[2]
+            print(data_split)
+
+            if username_good_bad == "bad":
+                # print("That username is alrady taken please input a diffent name")
+                username = input("username taken please input a diffent username ")
+
+            if p_username_good_bad == "bad":
+                # print("That username is alrady taken please choice a diffent name ")
+                public_username = input("public username taken please input a diffent username")
+
+            create_user(username, public_username)
+
+        elif command == "created_user":
+            print("user created")
 
 
+# update_local_database()
 
-server.sendall(b'update_highscore png')
-print("sent")
-server.close()
+# server.sendall(b"hello world")
+# server.sendall(b"updated world")
+
+
+# for i in range(100):
+#     server.sendall(b"Hello world")
+#     print("test")
+if connect():
+    server.close()
+
+# server.sendall(b'update_highscore png')
+# print("sent")
+# server.close()
 
 # main_menu.run_game()
