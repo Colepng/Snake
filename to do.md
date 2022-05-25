@@ -1,3 +1,9 @@
-#make a web server for the data base
+#add a function for syncing the database
 
-#add a sql data base of leader boards
+#crate a login command and fucntion 
+
+#add a function for syncing the database
+
+#crate ui for login and crate user
+
+#implement a leaderboard
