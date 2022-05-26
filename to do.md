@@ -6,4 +6,6 @@
 
 #crate ui for login and crate user
 
+#change how eveything works by making the server able to talk to mutlitple clients at once
+
 #implement a leaderboard

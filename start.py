@@ -59,6 +59,8 @@ def check_username(username,password):
         con.close()
         return False
 
+def sync():
+    server.send(b"sync")
 
 
 def create_user(username, public_username):
@@ -136,6 +138,17 @@ while 1:
                     username = input("username taken please input a new username")
                     server.send(f"check_username {username}".encode("utf-8"))
                     pass
+        
+        elif command == "sync":
+            with open("Snake.sqlite3","wb") as f:
+                while 1:
+                    f_reading = server.recv(4096)
+                    # print(f_reading)
+                    if not f_reading:
+                        print("not reading")
+                        break
+                    f.write(f_reading)
+
 
         elif command == "public_username":
             good_or_bad = data_split[1]
@@ -159,9 +172,10 @@ while 1:
                 public_username = input("public username taken please input a diffent username")
 
             create_user(username, public_username)
-
+            
         elif command == "created_user":
             print("user created")
+            sync()
 
 
 # update_local_database()
