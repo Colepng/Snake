@@ -1,11 +1,11 @@
-#add a function for syncing the database
+#add a function for syncing the database ✔
 
-#crate a login command and fucntion 
-
-#add a function for syncing the database
+#make the login command talk to the server if it has an internet connection✔
 
 #crate ui for login and crate user
 
 #change how eveything works by making the server able to talk to mutlitple clients at once
 
 #implement a leaderboard
+
+#proprley connect to the server and not just hold one connetcion the whole time, by making a function for connecting and disconneting

@@ -23,13 +23,13 @@ def run_game():
 
     screen = pygame.display.set_mode((win_x, win_y))  # sets the windoes size
 
-    rect = pygame.Rect(win_x/2 - 200, win_y/2 - 50, 400, 100,)
+    play_rect = pygame.Rect(win_x/2 - 200, win_y/2 - 50, 400, 100,)
 
 
     font = pygame.font.Font(pygame.font.get_default_font(), 75)
     text = font.render('PLAY', True, BLACK)
     text_rect = text.get_rect()
-    text_rect = (rect.left + ((rect.width - text.get_width())/2), rect.centery - text.get_height()/2)
+    text_rect = (play_rect.left + ((play_rect.width - text.get_width())/2), play_rect.centery - text.get_height()/2)
 
 
     # Loads the setting icon, sets its size and gets a rect for its
@@ -38,10 +38,12 @@ def run_game():
     setting_icon = pygame.transform.scale(setting_icon_no_size_change, (50, 50))
     setting_icon_rect = setting_icon.get_rect(x=10, y=10)
 
+    # account screen
+
 
     while 1:
         screen.fill((0, 255, 0))
-        pygame.draw.rect(screen, BLACK, rect, width=5)
+        pygame.draw.rect(screen, BLACK, play_rect, width=5)
         screen.blit(text, text_rect)
         screen.blit(setting_icon, setting_icon_rect)
         pygame.display.flip()
@@ -70,7 +72,7 @@ def run_game():
 
                 print(pygame.display.list_modes())
 
-            if event.type == MOUSEBUTTONDOWN and rect.collidepoint(event.pos):
+            if event.type == MOUSEBUTTONDOWN and play_rect.collidepoint(event.pos):
                 game().run(screen, length, size, win_x, win_y,starting_x, starting_y,head_colour,snake_colour_1,snake_colour_2,if_hex, speed)  # Runs the run fuctions
                 count = 2
 

@@ -38,6 +38,6 @@
     "head_colour_hex": "#9334FD",
     "snake_colour_1_hex": "#5434AC",
     "snake_colour_2_hex": "#45248E",
-    "speed": 8,
+    "speed": 10,
     "if_hex": false
 }
