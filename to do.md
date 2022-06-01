@@ -2,7 +2,9 @@
 
 #make the login command talk to the server if it has an internet connection✔
 
-#crate ui for login and crate user
+#crate ui for login and crate user ✔
+
+#Add ui to the main game
 
 #change how eveything works by making the server able to talk to mutlitple clients at once
 

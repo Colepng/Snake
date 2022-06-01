@@ -28,6 +28,7 @@ base_font = pygame.font.Font(None,32)
 
 clock = pygame.time.Clock()
 
+hit_rect = ""
 
 while 1:
 

@@ -92,15 +92,15 @@ def run():
         for event in pygame.event.get():
 
             if event.type == MOUSEBUTTONDOWN:
-                for i in range(len(input_rects)):
-                    if input_rects[i].collidepoint(event.pos):
-                        print(input_rects[i].collidepoint(event.pos), i)
+                for i in input_rects:
+                    if i.collidepoint(event.pos):
+                        print(i.collidepoint(event.pos))
                         active = True
-                        hit_rect = i
+                        hit_rect = input_rects.index(i)
                         break
                     
 
-                    if not input_rects[i].collidepoint(event.pos):
+                    if not i.collidepoint(event.pos):
                         active = False
 
                 if if_hex_rect.collidepoint(event.pos):
@@ -218,7 +218,7 @@ def run():
 
         screen.blit(if_hex_surface, calc_mid_of_rect_for_text(if_hex_rect, if_hex_surface))
 
-        screen.blit(apply_surface,(apply_rect.topleft))
+        screen.blit(apply_surface, (apply_rect.topleft))
 
 
         #input_rect.w = max(100, text_surface.get_width()+10)
