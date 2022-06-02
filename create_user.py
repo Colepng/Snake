@@ -138,5 +138,6 @@ def create_user(screen):
         pygame.display.flip()
 
         clock.tick(60)
-
-create_user(pygame.display.set_mode((800, 600)))
+        
+if __name__ == "__main__":
+    create_user()
