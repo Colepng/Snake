@@ -2,7 +2,7 @@ import  pygame
 from pygame.locals import *
 from pygame.rect import *
 
-from fun import draw_surfaces
+from fun import calc_mid_of_rect_for_text, draw_surfaces
 from serve_fun import main
 def create_user(screen):
     #create user
@@ -41,6 +41,7 @@ def create_user(screen):
     input_texts = [username_input_text, public_username_input_text, password_input_text, confirm_password_input_text] 
 
     create_user_rect = pygame.Rect(confirm_password_input_rect.left, confirm_password_input_rect.bottom + 100, rect_width, rect_height,)
+    back_rect = pygame.Rect (0, 0, rect_width, rect_height,)
 
     color_active = pygame.Color('lightskyblue3')
 
@@ -74,6 +75,8 @@ def create_user(screen):
                         username_good_bad, p_username_good_bad = main("create_user", input_texts[0], input_texts[2], input_texts[1])
                         if username_good_bad == "good" and p_username_good_bad == "good":
                             print("good")
+                elif back_rect.collidepoint(event.pos):
+                    return
                     
         
 
@@ -114,12 +117,17 @@ def create_user(screen):
         
         passowrd_same_surface = base_font.render('passwords do not match', True, BLACK)
 
+        back_surface = base_font.render('Back', True, BLACK)
+
         surfaces = [username_surface, public_username_surface, password_surface, confirm_password_surface]
 
         username_input_surface = base_font.render(input_texts[0], True, BLACK)
         public_username_input_surface = base_font.render(input_texts[1], True, BLACK)
         password_input_surface = base_font.render(input_texts[2], True, BLACK)
         confirm_password_input_surface = base_font.render(input_texts[3], True, BLACK)
+
+        screen.blit(back_surface, calc_mid_of_rect_for_text(back_rect, back_surface))
+        pygame.draw.rect(screen, BLACK, back_rect, 5)
 
 
         input_surfaces = [username_input_surface, public_username_input_surface, password_input_surface, confirm_password_input_surface]

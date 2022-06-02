@@ -7,6 +7,7 @@ import sys
 
 from game import game as game
 import setting_menu
+from account__screen import login_create_account_screen
 
 def run_game():
     pygame.init()
@@ -39,11 +40,14 @@ def run_game():
     setting_icon_rect = setting_icon.get_rect(x=10, y=10)
 
     # account screen
+    account_screen_rect = pygame.Rect(win_x - 50, 0, 50, 50,)
+
 
 
     while 1:
         screen.fill((0, 255, 0))
         pygame.draw.rect(screen, BLACK, play_rect, width=5)
+        pygame.draw.rect(screen, BLACK, account_screen_rect)
         screen.blit(text, text_rect)
         screen.blit(setting_icon, setting_icon_rect)
         pygame.display.flip()
@@ -72,11 +76,14 @@ def run_game():
 
                 print(pygame.display.list_modes())
 
-            if event.type == MOUSEBUTTONDOWN and play_rect.collidepoint(event.pos):
+            elif event.type == MOUSEBUTTONDOWN and play_rect.collidepoint(event.pos):
                 game().run(screen, length, size, win_x, win_y,starting_x, starting_y,head_colour,snake_colour_1,snake_colour_2,if_hex, speed)  # Runs the run fuctions
-                count = 2
+                
+            elif event.type == MOUSEBUTTONDOWN and account_screen_rect.collidepoint(event.pos):
+                login_create_account_screen(screen)
+                
 
-            if event.type == QUIT:
+            elif event.type == QUIT:
                 sys.exit()
 
 # run_game()

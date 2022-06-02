@@ -18,6 +18,8 @@ def login_create_account_screen(screen):
 
     login_rect = pygame.Rect(create_user_rect.left, create_user_rect.bottom + 50, rect_width, rect_height,)
 
+    back_rect = pygame.Rect(0, 0, rect_width, rect_height)
+
     pygame.font.init()
 
     base_font = pygame.font.Font(None, 32)
@@ -37,20 +39,25 @@ def login_create_account_screen(screen):
                     print("login")
                     login(screen)
 
+                elif back_rect.collidepoint(event.pos):
+                    return
+
 
         login_surface = base_font.render("Login", True, BLACK)
         create_user_surface = base_font.render("Create User", True, BLACK)
+        back_surface = base_font.render("Back", True, BLACK)
 
         screen.fill((255, 255, 255))
 
         pygame.draw.rect(screen, BLACK, create_user_rect, 5)
         pygame.draw.rect(screen, BLACK, login_rect, 5)
+        pygame.draw.rect(screen, BLACK, back_rect, 5)
 
         screen.blit(login_surface, calc_mid_of_rect_for_text(login_rect, login_surface))
 
         screen.blit(create_user_surface, calc_mid_of_rect_for_text(create_user_rect, create_user_surface))
 
+        screen.blit(back_surface, calc_mid_of_rect_for_text(back_rect, back_surface))
+
         pygame.display.flip()
 
-
-login_create_account_screen(pygame.display.set_mode((800, 600)))

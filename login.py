@@ -12,14 +12,20 @@ def login(screen):
 
     BLACK = (0, 0, 0)
 
+    rect_width = 140
+
+    rect_height  = 32
+
     user_text = [username_input,password_input]
 
-    username_rect = pygame.Rect(200,200,140,32)
-    passowrd_rect = pygame.Rect(200,250,140,32)
+    username_rect = pygame.Rect(200, 200, rect_width, rect_height)
+    passowrd_rect = pygame.Rect(200, 250, rect_width, rect_height)
 
     input_rects = [username_rect,passowrd_rect]
 
-    login_rect = pygame.Rect(200,300,140,32)
+    login_rect = pygame.Rect(200, 300, rect_width, rect_height)
+
+    back_rect = pygame.Rect(0, 0, rect_width, rect_height)
 
     pygame.font.init()
     base_font = pygame.font.Font(None,32)
@@ -39,7 +45,7 @@ def login(screen):
                         hit_rect = i
                         break       
 
-                    if not input_rects[i].collidepoint(event.pos):
+                    elif not input_rects[i].collidepoint(event.pos):
                         hit_rect = "outside"
 
 
@@ -51,6 +57,9 @@ def login(screen):
                         print("Login Successful")
                     else:
                         print("Login Failed")
+
+                elif back_rect.collidepoint(event.pos):
+                    return
 
             elif event.type == QUIT:
                 pygame.quit()
@@ -78,6 +87,8 @@ def login(screen):
 
         login_surface = base_font.render("Login",True,(0, 0, 0))
 
+        back_surface = base_font.render("Back",True,(0, 0, 0))
+
         username_input_surface = base_font.render(user_text[0], True, BLACK)
 
         password_input_surface = base_font.render(user_text[1], True, BLACK)    
@@ -86,8 +97,11 @@ def login(screen):
 
         draw_surfaces(screen, password_input_surface, password_surface, passowrd_rect)
 
+
         screen.blit(login_surface, calc_mid_of_rect_for_text(login_rect, login_surface))
-        pygame.draw.rect(screen,(0, 0, 0),login_rect,5)
+        pygame.draw.rect(screen, BLACK, login_rect, 5)
+        pygame.draw.rect(screen, BLACK, back_rect, 5)
+        screen.blit(back_surface, calc_mid_of_rect_for_text(back_rect, back_surface))
         
         pygame.display.flip()
 
