@@ -4,7 +4,9 @@
 
 #crate ui for login and crate user ✔
 
-#Add ui to the main game
+#Add ui to the main game ✔
+
+#Have login actully get the someones highscore
 
 #change how eveything works by making the server able to talk to mutlitple clients at once
 

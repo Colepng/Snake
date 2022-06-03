@@ -5,13 +5,17 @@ import json
 setting = open('settings.json',)
 setting_json = json.load(setting)
 size = setting_json['size']
+logged = json.load(open('logged.json',))
 setting.close()
+def get_logged():
+    logged = json.load(open('logged.json',))
+    return logged
 
 def calc_in_grid(num_to_round, grid_size):
     return round(num_to_round/grid_size)*grid_size
 
 def set_up_highscore():
-    filename = "highscore.pk"
+    filename = "highscore.pk" if logged == False else "highscore_account.pk"
     with open(filename,  "wb") as f:
         highscore = 0
         pickle.dump(highscore, f)
@@ -50,3 +54,7 @@ def list_into_str(list):
 def draw_surfaces(screen, input_surface, text_surface, rect):
     screen.blit(input_surface, calc_mid_of_rect_for_text(rect, input_surface))
     screen.blit(text_surface, calc_offset_of_outside_text(rect, text_surface))
+
+def update_account_highscore(score):
+    with open("highscore_account.pk", "wb") as f:
+        pickle.dump(score, f)

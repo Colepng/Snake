@@ -53,7 +53,7 @@ def login(screen):
 
                 if login_rect.collidepoint(event.pos):
                     print("login")              
-                    if main("login",user_text[0],user_text[1]):
+                    if main("login", user_text[0], user_text[1]):
                         print("Login Successful")
                     else:
                         print("Login Failed")

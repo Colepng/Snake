@@ -6,6 +6,11 @@ from calc_for_json import calc_in_grid
 setting = open('settings.json',)
 setting_json = json.load(setting)
 
+def write_logged(logged):
+    with open('logged.json','w') as f:
+        json.dump(logged, f)
+        f.close()
+    
 json.load(open('settings.json',))['head_colour_rgb']
 
 def write(size,
@@ -49,3 +54,5 @@ def write(size,
 #    // "head_colour": "#320E3B",
 #     // "snake_colour_1": "#EDF4ED",
 #     // "snake_colour_2": "#4CB963"
+
+# print(json.load(open('logged.json',)))

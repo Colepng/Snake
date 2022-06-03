@@ -1,9 +1,12 @@
 import pygame
 from pygame.locals import *
 import pickle
+import json
 
 
 def play_again(screen, starting_x, starting_y,width,height, apple_count):
+    
+    logged = json.load(open('logged.json',))
     
     WHITE = (255,255,255)
 
@@ -17,10 +20,13 @@ def play_again(screen, starting_x, starting_y,width,height, apple_count):
     apple_rect = apple.get_rect(x=main_rect.left + 100, y=main_rect.top + 50)
 
     new_high_score = False
-    filename = "highscore.pk"
+    filename = "highscore.pk" if not logged else "highscore_account.pk"
+    print(logged)
+    print(filename)
     with open(filename,  "rb") as f:
         unpick = pickle.Unpickler(f)
         old_highscore = unpick.load()
+        print(old_highscore)
 
         if old_highscore < apple_count:
 
@@ -31,6 +37,7 @@ def play_again(screen, starting_x, starting_y,width,height, apple_count):
     with open(filename,  "rb") as f:
         unpick = pickle.Unpickler(f)
         highscore = unpick.load()
+        print(highscore)
 
     play_again_rect = pygame.Rect(0,0,400 - 5,50)
     play_again_rect = pygame.Rect(main_rect.left,main_rect.bottom + 10, play_again_rect.width, play_again_rect.height)

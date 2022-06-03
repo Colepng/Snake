@@ -2,6 +2,9 @@ import socket
 import sqlite3 as sql
 from types import NoneType
 import urllib.request
+from fun import update_account_highscore
+
+from settings import write_logged
 
 def main(fun, username, password, public_username=None):
 
@@ -80,7 +83,7 @@ def main(fun, username, password, public_username=None):
         server.send(b"sync")
 
 
-    def login_user(username,password):
+    def login_user(username, password):
         if connect():
             sync()
             loop()
@@ -94,7 +97,12 @@ def main(fun, username, password, public_username=None):
         fetch = cur.fetchone()
         print(fetch)
         if type(fetch) != NoneType:
-            con.close()
+            get_highscore  = f"SELECT highscore FROM Snake WHERE username = '{username}'"
+            cur.execute(get_highscore)
+            fetch_highscore = cur.fetchone()
+            print(fetch_highscore[0])
+            write_logged(True)
+            update_account_highscore(fetch_highscore[0])
             return True
         else:
             con.close()
