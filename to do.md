@@ -6,7 +6,11 @@
 
 #Add ui to the main game ✔
 
-#Have login actully get the someones highscore
+#Have login actully get the someones highscore✔
+
+#Have a log out button
+
+#add a sync button that updates the user highscore server side and gets new data frmo the server 
 
 #change how eveything works by making the server able to talk to mutlitple clients at once
 
