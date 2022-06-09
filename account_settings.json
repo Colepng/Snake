@@ -5,9 +5,21 @@
     "starting_y": 420,
     "size": 35,
     "length": 6,
-    "head_colour": "#0000FF",
-    "snake_colour_1": "#00FF00",
-    "snake_colour_2": "#009600",
+    "head_colour": [
+        0,
+        0,
+        255
+    ],
+    "snake_colour_1": [
+        0,
+        255,
+        0
+    ],
+    "snake_colour_2": [
+        0,
+        150,
+        0
+    ],
     "head_colour_rgb": [
         0,
         0,
@@ -23,9 +35,9 @@
         150,
         0
     ],
-    "head_colour_hex": "#0000FF",
-    "snake_colour_1_hex": "#00FF00",
+    "head_colour_hex": "#0000ff",
+    "snake_colour_1_hex": "#00ff00",
     "snake_colour_2_hex": "#009600",
     "speed": 8,
-    "if_hex": true
+    "if_hex": false
 }

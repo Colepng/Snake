@@ -8,7 +8,9 @@
 
 #Have login actully get the someones highscore✔
 
-#Have a log out button
+#Have a log out button✔
+
+#Have login load the user settings
 
 #add a sync button that updates the user highscore server side and gets new data frmo the server 
 

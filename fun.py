@@ -2,19 +2,24 @@ import pickle
 import pygame
 import json
 
-setting = open('settings.json',)
-setting_json = json.load(setting)
-size = setting_json['size']
-logged = json.load(open('logged.json',))
-setting.close()
 def get_logged():
     logged = json.load(open('logged.json',))
     return logged
+def get_highscore():
+    logged = json.load(open('logged.json',))
+    filename = "highscore.pk" if not logged else "highscore_account.pk"
+    with open(filename, "rb") as f: 
+        unpick = pickle.Unpickler(f)
+        return unpick.load()
+def get_username():
+    return json.load(open('logged.json',))["username"]
+
 
 def calc_in_grid(num_to_round, grid_size):
     return round(num_to_round/grid_size)*grid_size
 
 def set_up_highscore():
+    logged = json.load(open('logged.json',))
     filename = "highscore.pk" if logged == False else "highscore_account.pk"
     with open(filename,  "wb") as f:
         highscore = 0
@@ -58,3 +63,7 @@ def draw_surfaces(screen, input_surface, text_surface, rect):
 def update_account_highscore(score):
     with open("highscore_account.pk", "wb") as f:
         pickle.dump(score, f)
+
+def str_as_list_into_list_int(list):
+    list_str = list.replace('[','').replace(']','').replace(' ','').split(',')
+    return [int(i) for i in list_str]

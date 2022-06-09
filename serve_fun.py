@@ -3,10 +3,9 @@ import sqlite3 as sql
 from types import NoneType
 import urllib.request
 from fun import update_account_highscore
+from settings import load_account_settings
 
-from settings import write_logged
-
-def main(fun, username, password, public_username=None):
+def main(fun, username, password=None, public_username=None, highscore=None):
 
     def loop():
         while 1:
@@ -20,7 +19,7 @@ def main(fun, username, password, public_username=None):
                 print(data_split)
                 command = data_split[0]
                 print(command)
-
+                
                 
                 if command == "sync":
                     with open("Snake.sqlite3","wb") as f:
@@ -50,6 +49,7 @@ def main(fun, username, password, public_username=None):
 
                 elif command == "sync_done":
                     return "good", "good"
+                    
     def connect(host='http://google.com'):
         try:
             urllib.request.urlopen(host)
@@ -69,10 +69,6 @@ def main(fun, username, password, public_username=None):
         if return_server:
             return server
 
-    def disconnect_server(server):
-        server.close()
-
-
     if connect():
         server = connect_server(True)
 
@@ -82,6 +78,8 @@ def main(fun, username, password, public_username=None):
     def sync():
         server.send(b"sync")
 
+    def update_highscore(username, highscore):
+        server.send(f"update_highscore {username} {highscore}".encode())
 
     def login_user(username, password):
         if connect():
@@ -100,9 +98,9 @@ def main(fun, username, password, public_username=None):
             get_highscore  = f"SELECT highscore FROM Snake WHERE username = '{username}'"
             cur.execute(get_highscore)
             fetch_highscore = cur.fetchone()
-            print(fetch_highscore[0])
-            write_logged(True)
+            print(fetch_highscore[0], "test")
             update_account_highscore(fetch_highscore[0])
+            load_account_settings(username)
             return True
         else:
             con.close()
@@ -113,8 +111,8 @@ def main(fun, username, password, public_username=None):
 
     def create_user(username, public_username, password):
 
-        con = sql.connect("Snake.sqlite3")
-        cur = con.cursor()
+        # con = sql.connect("Snake.sqlite3")
+        # cur = con.cursor()
 
         for i in range(1):
             # online database code
@@ -140,6 +138,10 @@ def main(fun, username, password, public_username=None):
         print("create_user")
         print(username, public_username)
         return create_user(username, public_username, password)
+
+    elif fun == "sync":
+        update_highscore(username, highscore)
+        sync()
 
 
 
