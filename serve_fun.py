@@ -1,12 +1,13 @@
+import json
 import socket
 import sqlite3 as sql
 from types import NoneType
 import urllib.request
 from fun import update_account_highscore
-from settings import load_account_settings
+from settings import load_account_settings, write_logged
 
-def main(fun, username, password=None, public_username=None, highscore=None):
-
+def main(fun, username, password=None, public_username=None, highscore=None, settings=None):
+    print(highscore, "in main")
     def loop():
         while 1:
             data = server.recv(1024)
@@ -49,6 +50,9 @@ def main(fun, username, password=None, public_username=None, highscore=None):
 
                 elif command == "sync_done":
                     return "good", "good"
+                
+                elif command == "updated_highscore":
+                    return "updated_highscore"
                     
     def connect(host='http://google.com'):
         try:
@@ -79,7 +83,9 @@ def main(fun, username, password=None, public_username=None, highscore=None):
         server.send(b"sync")
 
     def update_highscore(username, highscore):
-        server.send(f"update_highscore {username} {highscore}".encode())
+        print(highscore,"in highscore")
+        server.send(f"update_highscore {username} {highscore}".encode("utf-8"))
+        loop()
 
     def login_user(username, password):
         if connect():
@@ -101,6 +107,7 @@ def main(fun, username, password=None, public_username=None, highscore=None):
             print(fetch_highscore[0], "test")
             update_account_highscore(fetch_highscore[0])
             load_account_settings(username)
+            write_logged(True)
             return True
         else:
             con.close()
@@ -129,6 +136,8 @@ def main(fun, username, password=None, public_username=None, highscore=None):
         print(username,password)
         if login_user(username,password):
             print("username and password correct welcome")
+            with open("username.json","w") as f:
+                json.dump(username,f)
             return True
         else:
             print("username or password incorrect")
@@ -140,8 +149,11 @@ def main(fun, username, password=None, public_username=None, highscore=None):
         return create_user(username, public_username, password)
 
     elif fun == "sync":
+        print(highscore, "in sync")
         update_highscore(username, highscore)
         sync()
+        loop()
+        #server.send(f"sync_settings {settings}".encode("utf-8"))
 
 
 

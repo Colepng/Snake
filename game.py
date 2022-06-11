@@ -24,7 +24,7 @@ class game: #Crates a class for the actual game
     
     def run(self, surface, length, size, win_x, win_y, starting_x, starting_y, head_colour, snake_colour_1, snake_colour_2,if_hex, speed):# The games loop
         #sets the windoes size
-        # fun.set_up_highscore()
+        #fun.set_up_highscore()
         self.snake = snake.Snake(surface, length, size, win_x, win_y, starting_x, starting_y, head_colour, snake_colour_1, snake_colour_2,if_hex)
         self.snake.draw()
         #print(pygame.display.get_window_size())

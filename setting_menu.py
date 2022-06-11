@@ -2,7 +2,7 @@ import pygame
 from pygame.locals import *
 from pygame.rect import *
 
-from fun import calc_mid_of_rect_for_text, calc_offset_of_outside_text, list_into_str, draw_surfaces
+from fun import calc_mid_of_rect_for_text, list_into_str, draw_surfaces
 
 import json
 
@@ -12,8 +12,8 @@ import settings
 
 def run():
     clock = pygame.time.Clock()
-
-    setting = open('settings.json',)
+    logged = json.load(open('logged.json',))
+    setting = open('settings.json',) if logged == False else open('account_settings.json',)
     setting_json = json.load(setting)
     win_x = setting_json['win_x']
     win_y = setting_json['win_y']

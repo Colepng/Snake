@@ -10,9 +10,11 @@ def get_highscore():
     filename = "highscore.pk" if not logged else "highscore_account.pk"
     with open(filename, "rb") as f: 
         unpick = pickle.Unpickler(f)
-        return unpick.load()
+        unpicked = unpick.load()
+        #print(unpicked)
+        return unpicked
 def get_username():
-    return json.load(open('logged.json',))["username"]
+    return json.load(open('username.json',))
 
 
 def calc_in_grid(num_to_round, grid_size):

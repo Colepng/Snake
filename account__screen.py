@@ -5,6 +5,7 @@ from login import login
 from fun import calc_mid_of_rect_for_text, get_highscore, get_logged, get_username
 from serve_fun import main
 from settings import write_logged
+import json
 
 
 def login_create_account_screen(screen):
@@ -55,8 +56,9 @@ def login_create_account_screen(screen):
 
                 elif sync_rect.collidepoint(event.pos) and logged:
                     print("sync")
-                    print(get_username(), get_highscore())
-                    main("sync", get_username(), get_highscore())
+                    highscore = get_highscore()
+                    print(get_username(), highscore)
+                    main("sync", get_username(), highscore = highscore, settings = json.load(open("account_settings.json",)))
                     
 
         login_surface = base_font.render("Login", True, BLACK)
