@@ -10,6 +10,8 @@
 
 #Have a log out button✔
 
+#Fix syncing only working every other time
+
 #Have login load the user settings
 
 #add a sync button that updates the user highscore server side and gets new data frmo the server 

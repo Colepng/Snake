@@ -1,10 +1,12 @@
 import json
 import socket
 import sqlite3 as sql
+import pickle
 from types import NoneType
 import urllib.request
 from fun import update_account_highscore
 from settings import load_account_settings, write_logged
+import time
 
 def main(fun, username, password=None, public_username=None, highscore=None, settings=None):
     print(highscore, "in main")
@@ -153,8 +155,12 @@ def main(fun, username, password=None, public_username=None, highscore=None, set
         update_highscore(username, highscore)
         sync()
         loop()
-        #server.send(f"sync_settings {settings}".encode("utf-8"))
-
+        print(f"{settings}")
+        server.send(f"sync_settings {username}".encode("utf-8"))
+        pickled_settings = pickle.dumps(settings)
+        #print(pickled_settings)
+        server.send(pickled_settings)
+        
 
 
     if connect():
