@@ -26,6 +26,6 @@
     "head_colour_hex": "#0000FF",
     "snake_colour_1_hex": "#00FF00",
     "snake_colour_2_hex": "#009600",
-    "speed": 8,
+    "speed": 12,
     "if_hex": true
 }

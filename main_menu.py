@@ -16,8 +16,9 @@ def run_game():
 
     # window_sizes = pygame.display.list_modes()
     # screen = pygame.display.set_mode(window_sizes[int(input())], FULLSCREEN)
-
-    setting_file = open('settings.json',)
+    logged = json.load(open('logged.json',))
+    print(logged)
+    setting_file = open('settings.json',) if logged == False else open('account_settings.json',)    
     setting_file_loaded = json.load(setting_file)
     win_x = setting_file_loaded['win_x']
     win_y = setting_file_loaded['win_y']
@@ -54,6 +55,11 @@ def run_game():
 
         for event in pygame.event.get():
             mouse_pos = pygame.mouse.get_pos()
+            logged = json.load(open('logged.json',))
+            temp_setting_file = setting_file
+            setting_file = open('settings.json',) if logged == False else open('account_settings.json',)
+            if temp_setting_file != setting_file:
+                setting_file_loaded = json.load(setting_file)
             length = setting_file_loaded['length']
             size = setting_file_loaded['size']
             win_x = setting_file_loaded['win_x']
@@ -65,18 +71,20 @@ def run_game():
             snake_colour_2 = setting_file_loaded['snake_colour_2']
             if_hex = setting_file_loaded['if_hex']
             speed = setting_file_loaded['speed']
+            
             screen = pygame.display.set_mode((win_x, win_y))
             #print(pygame.display.get_window_size(), win_x, win_y)
 
             if event.type == MOUSEBUTTONDOWN and setting_icon_rect.collidepoint(event.pos):
                 setting_menu.run()
                 setting_file.close()
-                setting_file = open('settings.json',)
+                setting_file = open('settings.json',) if logged == False else open('account_settings.json',)
                 setting_file_loaded = json.load(setting_file)
 
-                print(pygame.display.list_modes())
+                #print(pygame.display.list_modes())
 
             elif event.type == MOUSEBUTTONDOWN and play_rect.collidepoint(event.pos):
+                print(setting_file_loaded,setting_file,logged)
                 game().run(screen, length, size, win_x, win_y,starting_x, starting_y,head_colour,snake_colour_1,snake_colour_2,if_hex, speed)  # Runs the run fuctions
                 
             elif event.type == MOUSEBUTTONDOWN and account_screen_rect.collidepoint(event.pos):

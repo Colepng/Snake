@@ -12,6 +12,8 @@
 
 #Fix syncing only working every other time
 
+#Fix play again swichings settings files only when opening the settings menu✔
+
 #Have login load the user settings
 
 #add a sync button that updates the user highscore server side and gets new data frmo the server 
