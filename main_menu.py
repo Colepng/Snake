@@ -4,14 +4,50 @@ from pygame.rect import *
 
 import json
 import sys
+import sqlite3 as sql
 
 from game import game as game
 import setting_menu
 from account__screen import login_create_account_screen
 
+
+def write_leaderboard(screen, names, scores, leaderboard_rect):
+    font_small = pygame.font.Font(pygame.font.get_default_font(), 36)
+    texts = []
+    pos = leaderboard_rect.top + 10
+    #print(leaderboard_rect.topleft)
+    for i in range(len(names)):
+    #     font_small.render(names[i], scores[i], (255, 255, 255))
+        #print(names[i], scores[i])
+        texts.append(font_small.render(names[i] + " " + str(scores[i]), True, (0, 0, 0)))
+    for i in texts:
+        screen.blit(i, (leaderboard_rect.left + 10, pos))
+        pos += 50
+    
+def get_users_and_scores():
+    con = sql.connect("Snake.sqlite3")
+    cur = con.cursor()
+    get_users= "SELECT username FROM Snake ORDER BY highscore DESC LIMIT 10"
+    cur.execute(get_users)
+    users_sql = cur.fetchall()
+    users = []
+    for i in users_sql:
+        users.append(i[0])
+    #print(users)
+    get_highscore= "SELECT highscore FROM Snake ORDER BY highscore DESC LIMIT 10"
+    cur.execute(get_highscore)
+    highscores_sql = cur.fetchall()
+    highscores = []
+    for i in highscores_sql:
+        highscores.append(i[0])
+    #print(highscores)
+    return users, highscores
+
+
+
 def run_game():
     pygame.init()
-
+    
     BLACK = 0, 0, 0
 
     # window_sizes = pygame.display.list_modes()
@@ -24,11 +60,12 @@ def run_game():
     win_y = setting_file_loaded['win_y']
 
     screen = pygame.display.set_mode((win_x, win_y))  # sets the windoes size
-
+    
     play_rect = pygame.Rect(win_x/2 - 200, win_y/2 - 50, 400, 100,)
 
 
     font = pygame.font.Font(pygame.font.get_default_font(), 75)
+    font_small = pygame.font.Font(pygame.font.get_default_font(), 36)
     text = font.render('PLAY', True, BLACK)
     text_rect = text.get_rect()
     text_rect = (play_rect.left + ((play_rect.width - text.get_width())/2), play_rect.centery - text.get_height()/2)
@@ -43,15 +80,26 @@ def run_game():
     # account screen
     account_screen_rect = pygame.Rect(win_x - 50, 0, 50, 50,)
 
+    # leaderboard
+    leaderboard_rect = pygame.Rect(win_x - 250, 200, 200, 600)
+    leaderboard_rect = pygame.Rect(win_x - 250, (win_y-leaderboard_rect.height)/2, 200, 600)
+    leadboard_text = font_small.render('Leaderboard', True, BLACK)
+    leadboard_text_rect = leadboard_text.get_rect()
+    top_10_text = font_small.render('Top 10', True, BLACK)
+    top_10_text_rect = top_10_text.get_rect()
 
-
+    pygame.display.set_caption('Snake')
     while 1:
         screen.fill((0, 255, 0))
+        users, scores = get_users_and_scores()
+        write_leaderboard(screen, users, scores, leaderboard_rect)
         pygame.draw.rect(screen, BLACK, play_rect, width=5)
         pygame.draw.rect(screen, BLACK, account_screen_rect)
+        pygame.draw.rect(screen, BLACK, leaderboard_rect, width=5)
         screen.blit(text, text_rect)
         screen.blit(setting_icon, setting_icon_rect)
         pygame.display.flip()
+
 
         for event in pygame.event.get():
             mouse_pos = pygame.mouse.get_pos()
