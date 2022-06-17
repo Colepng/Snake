@@ -16,6 +16,8 @@
 
 #Have login load the user settings ✔
 
+#Have it so that sync can upload and download settings by having three version up, down and when creating a user use down since you dont have any data yet
+
 #add a sync button that updates the user highscore server side and gets new data frmo the server 
 
 #change how eveything works by making the server able to talk to mutlitple clients at once

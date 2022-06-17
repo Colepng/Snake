@@ -9,14 +9,16 @@ from settings import load_account_settings, write_logged
 import time
 
 def main(fun, username, password=None, public_username=None, highscore=None, settings=None):
-    print(highscore, "in main")
+    #print(highscore, "in main")
     def loop():
+        #print("starting loop")
         while 1:
             data = server.recv(1024)
+            #print("im stuck in loop")
 
             if data != None and data != b'':
-                print(data)
-                data_decoded = data.decode()
+                #print(data)
+                data_decoded = data.decode('utf-8')
                 print(data_decoded)
                 data_split = data_decoded.split(" ")
                 print(data_split)
@@ -27,6 +29,7 @@ def main(fun, username, password=None, public_username=None, highscore=None, set
                 if command == "sync":
                     with open("Snake.sqlite3","wb") as f:
                         while 1:
+                            print("im stuck in sync")
                             f_reading = server.recv(4096)
                             # print(f_reading)
                             if not f_reading:
@@ -82,11 +85,12 @@ def main(fun, username, password=None, public_username=None, highscore=None, set
         print("Cant connect to the server with out an internet connection")
 
     def sync():
-        server.send(b"sync")
+        server.send("sync".encode("utf-16"))
+        #print("sync sent")
 
     def update_highscore(username, highscore):
-        print(highscore,"in highscore")
-        server.send(f"update_highscore {username} {highscore}".encode("utf-8"))
+        #print(highscore,"in highscore")
+        server.send(f"update_highscore {username} {highscore}".encode("utf-16"))
         loop()
 
     def login_user(username, password):
@@ -122,14 +126,14 @@ def main(fun, username, password=None, public_username=None, highscore=None, set
 
         # con = sql.connect("Snake.sqlite3")
         # cur = con.cursor()
-
-        for i in range(1):
             # online database code
             # print(f"create_user {username} {public_username} {password} {0}")
-            server.sendall(f"create_user {username} {public_username} {password} {0}".encode("utf-8"))#in the furture replcace the zero with the local highscore
-            loop_test = loop()
-            print(loop_test)
-            return loop_test
+        server.sendall(f"create_user {username} {public_username} {password} {0}".encode("utf-16"))#in the furture replcace the zero with the local highscore
+        loop_test = loop()
+        print(loop_test)
+        # sync()
+        # loop()
+        return loop_test
 
 
             
@@ -151,16 +155,30 @@ def main(fun, username, password=None, public_username=None, highscore=None, set
         return create_user(username, public_username, password)
 
     elif fun == "sync":
-        print(highscore, "in sync")
+        #print(highscore, "in sync")
         update_highscore(username, highscore)
+        #print("In sync function")
         sync()
         loop()
-        print(f"{settings}")
-        server.send(f"sync_settings {username}".encode("utf-8"))
+        print("ending sync function")
+        return "done"
+
+    elif fun == "update_settings":
+       # print(f"{settings}")
+        #print(type(username), username)
+        #server.sendall(b'')
+        server.sendall(f"sync_settings {username}".encode("utf-16"))
+        while 1:
+            data = server.recv(1024)
+            if data == b'ready':
+                break
         pickled_settings = pickle.dumps(settings)
         #print(pickled_settings)
-        server.send(pickled_settings)
-        
+        server.sendall(pickled_settings)
+        #sync()
+        #print("ending sync starting loop")
+        #loop()
+        #return "done"
 
 
     if connect():

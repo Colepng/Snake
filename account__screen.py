@@ -43,6 +43,7 @@ def login_create_account_screen(screen):
                     print("create user")
                     create_user(screen)
                     
+                    
 
                 elif login_rect.collidepoint(event.pos):
                     print("login")
@@ -58,7 +59,9 @@ def login_create_account_screen(screen):
                     print("sync")
                     highscore = get_highscore()
                     print(get_username(), highscore)
-                    main("sync", get_username(), highscore = highscore, settings = json.load(open("account_settings.json",)))
+                    main("sync", get_username(), highscore = highscore)
+                    main("update_settings", get_username(), settings = json.load(open("account_settings.json",)))
+                    print("sync done")
                     
 
         login_surface = base_font.render("Login", True, BLACK)
