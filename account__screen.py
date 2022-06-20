@@ -73,7 +73,7 @@ def login_create_account_screen(screen):
                     print("sync done")
 
                 elif load_rect.collidepoint(event.pos) and logged:
-                    print("Need to add load")
+                    main("load_settings", get_username())
                     
             elif event.type == KEYDOWN:
                 if event.key == K_ESCAPE:

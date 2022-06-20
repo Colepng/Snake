@@ -4,7 +4,7 @@ import sqlite3 as sql
 import pickle
 from types import NoneType
 import urllib.request
-from fun import update_account_highscore
+from fun import get_highscore, update_account_highscore
 from settings import load_account_settings, write_logged
 import time
 
@@ -107,8 +107,8 @@ def main(fun, username, password=None, public_username=None, highscore=None, set
         fetch = cur.fetchone()
         print(fetch)
         if type(fetch) != NoneType:
-            get_highscore  = f"SELECT highscore FROM Snake WHERE username = '{username}'"
-            cur.execute(get_highscore)
+            select_highscore  = f"SELECT highscore FROM Snake WHERE username = '{username}'"
+            cur.execute(select_highscore)
             fetch_highscore = cur.fetchone()
             print(fetch_highscore[0], "test")
             update_account_highscore(fetch_highscore[0])
@@ -180,6 +180,23 @@ def main(fun, username, password=None, public_username=None, highscore=None, set
         #loop()
         #return "done"
 
+    elif fun == "load_settings":
+        if connect():
+            sync()
+            loop()
+        else:
+            print("Can not acsess the internet, so using the newset database on this computer")
+        con = sql.connect("Snake.sqlite3")
+        cur = con.cursor()
+        select_highscore  = f"SELECT highscore FROM Snake WHERE username = '{username}'"
+        cur.execute(select_highscore)
+        fetch_highscore = cur.fetchone()
+        print(fetch_highscore[0], "test")
+        print(get_highscore(), "get highscore")
+        if get_highscore() < fetch_highscore[0]:
+            update_account_highscore(fetch_highscore[0])
+            print("updated highscore")
+        load_account_settings(username)
 
     if connect():
         server.close()
