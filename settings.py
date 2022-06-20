@@ -52,7 +52,7 @@ def write(size,
     setting = open('settings.json','w') if logged == False else open('account_settings.json','w')
     json.dump(x,setting,indent=4)
 
-write(35, "#0000FF", "#00FF00", "#009600", True, 8, 6, [0,0,255], [0,255,0], [0,150,0], "#0000FF", "#00FF00", "#009600")
+#write(35, "#0000FF", "#00FF00", "#009600", True, 8, 6, [0,0,255], [0,255,0], [0,150,0], "#0000FF", "#00FF00", "#009600")
 
 def load_account_settings(username):
     setting = open('account_settings.json','w')

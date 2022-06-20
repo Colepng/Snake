@@ -10,7 +10,13 @@
 
 #Have a log out button ✔
 
-#Fix syncing only working every other time
+#Fix syncing only working every other time ✔
+
+#add a sync to cloud button
+
+#add a load from clound button
+
+#and add a get new data button
 
 #Fix play again swichings settings files only when opening the settings menu ✔
 
@@ -18,7 +24,7 @@
 
 #Have it so that sync can upload and download settings by having three version up, down and when creating a user use down since you dont have any data yet
 
-#add a sync button that updates the user highscore server side and gets new data frmo the server 
+#add a sync button that updates the user highscore server side and gets new data from the server ✔
 
 #change how eveything works by making the server able to talk to mutlitple clients at once
 
