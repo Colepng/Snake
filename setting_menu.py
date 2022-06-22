@@ -2,36 +2,18 @@ import pygame
 from pygame.locals import *
 from pygame.rect import *
 
+from fun import calc_mid_of_rect_for_text, list_into_str, draw_surfaces
+
 import json
 
 import settings
 
     #make setting menu to look better
 
-def calc_mid_of_rect_for_text(outside_rect, text):
-    return ((outside_rect.width - text.get_width())/2 + outside_rect.x, (outside_rect.height - text.get_height())/2 + outside_rect.y)
-            
-
-def calc_offset_of_outside_text(rect, text):
-    return (rect.x - text.get_width(),(rect.height - text.get_height())/2 + rect.y)
-    #(head_colour_input_rect.x - head_colour_surface.get_width(),head_colour_input_rect.height - head_colour_surface.get_height()/2 + head_colour_input_rect.y))
-
-def list_into_str(list):
-    first_run = True
-    list_as_str = ''
-    for i in range(len(list)): #0,0,255 = [0,1,2]
-        if first_run ==  True:
-            list_as_str = list_as_str + str(list[i]) #list[0] = 0            str(0) = "0"
-            first_run = False
-        else:
-            list_as_str = list_as_str + ',' + str(list[i]) # "0" + ',' + "0"        thired run "0,0" + ', + "255"
-        #print(list_as_str)
-    return list_as_str
-
 def run():
     clock = pygame.time.Clock()
-
-    setting = open('settings.json',)
+    logged = json.load(open('logged.json',))
+    setting = open('settings.json',) if logged == False else open('account_settings.json',)
     setting_json = json.load(setting)
     win_x = setting_json['win_x']
     win_y = setting_json['win_y']
@@ -59,7 +41,7 @@ def run():
     
     rect_width = 140
     rect_hight = 32
-    BLACK = (0,0,0)
+    BLACK = (0, 0, 0)
 
 
     pygame.font.init()
@@ -78,30 +60,64 @@ def run():
     snake_colour_1_input_text = snake_colour_1
     snake_colour_2_input_text = snake_colour_2
 
+    spacing = 20
+
+    #create rects
+
+    center = screen.get_rect().center
+    centerx = screen.get_rect().centerx
 
     user_text = [size_input_text,length_input_text,head_colour_input_text,snake_colour_1_input_text,snake_colour_2_input_text,speed_input_text]
+    #The rectangle in the middle of the screen
+    head_colour_input_rect = pygame.Rect(0, 0,rect_width, rect_hight)
+    head_colour_input_rect.center = center
 
-    size_input_rect = pygame.Rect(starting_x, starting_y, rect_width, rect_hight)
-    length_input_rect = pygame.Rect(starting_x, size_input_rect.bottom + 10, rect_width, rect_hight)
+    #The top 3 rectangles 
+    if_hex_rect = pygame.Rect(0, 0, rect_width*2, rect_hight)
+    if_hex_rect.centerx = centerx
+    if_hex_rect.bottom = head_colour_input_rect.top - spacing
 
-    if_hex_rect = pygame.Rect(starting_x-rect_width/2, length_input_rect.bottom + 10,rect_width*2,rect_hight)
 
-    head_colour_input_rect = pygame.Rect(starting_x, if_hex_rect.bottom + 10,rect_width, rect_hight)
-    snake_colour_1_input_rect = pygame.Rect(starting_x, head_colour_input_rect.bottom + 10, rect_width, rect_hight)
+    size_input_rect = pygame.Rect(0, 0, rect_width, rect_hight)
+    size_input_rect.centerx = centerx
+    size_input_rect.bottom = if_hex_rect.top - spacing
+
+    length_input_rect = pygame.Rect(0, 0, rect_width, rect_hight)
+    length_input_rect.centerx = centerx
+    length_input_rect.bottom = size_input_rect.top - spacing
+
+    #Bottom 3 rectangles
+    snake_colour_1_input_rect = pygame.Rect(0, 0, rect_width, rect_hight)
+    snake_colour_1_input_rect.centerx = centerx
+    snake_colour_1_input_rect.top = head_colour_input_rect.bottom + spacing
+
     snake_colour_2_input_rect = pygame.Rect(starting_x, snake_colour_1_input_rect.bottom + 10, rect_width, rect_hight)
+    snake_colour_2_input_rect.centerx = centerx
+    snake_colour_2_input_rect.top = snake_colour_1_input_rect.bottom + spacing
 
     speed_input_rect = pygame.Rect(starting_x, snake_colour_2_input_rect.bottom + 10, rect_width, rect_hight)
+    speed_input_rect.centerx = centerx
+    speed_input_rect.top = snake_colour_2_input_rect.bottom + spacing
 
+    #Buttons
+    apply_rect = pygame.Rect(0, 700, 140, 32)
+    apply_rect.x = centerx + spacing
 
-    apply_rect = pygame.Rect(500,700,140,32)
+    back_rect = pygame.Rect(0, 700, 140, 32)
+    back_rect.right = centerx - spacing
+    
+    #Text
+    input_rects = [size_input_rect, length_input_rect, head_colour_input_rect, snake_colour_1_input_rect, snake_colour_2_input_rect, speed_input_rect]
+    colour_state = [False, False, False, False, False, False]#Which box is seleced for colours
+
+    #Colours
+    not_selected_colour = (0, 0, 0)
+    
+    selected_colour = pygame.Color("#E5446D")
+
     
 
-    input_rects = [size_input_rect,length_input_rect, head_colour_input_rect, snake_colour_1_input_rect, snake_colour_2_input_rect, speed_input_rect]
-
-    color_active = pygame.Color('lightskyblue3')
-
-    color_passive = pygame.Color('chartreuse4')
-    color = color_passive
+    #rects_and_colours = {"size_input_rect":not_selected_colour, "length_input_rect":not_selected_colour, "head_colour_input_rect":not_selected_colour, "snake_colour_1_input_rect":not_selected_colour, "snake_colour_2_input_rect":not_selected_colour, "speed_input_rect":not_selected_colour}
 
     active = False
 
@@ -109,16 +125,18 @@ def run():
 
         for event in pygame.event.get():
 
-            if event.type == pygame.MOUSEBUTTONDOWN:
-                for i in range(len(input_rects)):
-                    if input_rects[i].collidepoint(event.pos):
-                        print(input_rects[i].collidepoint(event.pos), i)
+            if event.type == MOUSEBUTTONDOWN:
+                colour_state = [False, False, False, False, False, False]
+                for i in input_rects:
+                    if i.collidepoint(event.pos):
+                        print(i.collidepoint(event.pos))
                         active = True
-                        hit_rect = i
+                        hit_rect = input_rects.index(i)
+                        colour_state[hit_rect] = True
                         break
                     
 
-                    if not input_rects[i].collidepoint(event.pos):
+                    if not i.collidepoint(event.pos):
                         active = False
 
                 if if_hex_rect.collidepoint(event.pos):
@@ -144,7 +162,7 @@ def run():
 
                         
 
-                if apply_rect.collidepoint(event.pos):
+                elif apply_rect.collidepoint(event.pos):
 
                     if if_hex == False:
                         snake_colour_2_input_text = user_text[4].split(',')
@@ -172,7 +190,9 @@ def run():
                             head_colour_rgb=head_colour_output, snake_colour_1_rgb=snake_colour_1_output, snake_colour_2_rgb=snake_colour_2_output, if_hex=if_hex
                             )
                     return print('exit')
-    
+                elif back_rect.collidepoint(event.pos):
+                    return
+
             if event.type == KEYDOWN and active == True:
                 text = event.unicode
 
@@ -186,17 +206,14 @@ def run():
                     user_text[hit_rect] += text
 
         screen.fill((255, 255, 255, 100))
-    
-        if active:
-            color = color_active
-        else:
-            color = color_passive
 
-        for i in range(len(input_rects)):
-            pygame.draw.rect(screen, color, input_rects[i], width=5)
-        
-        pygame.draw.rect(screen,color, apply_rect, width=5)
-        pygame.draw.rect(screen,color, if_hex_rect, width=5)
+        for i in input_rects:
+            #print(colour_state[input_rects.index(i)], input_rects.index(i))
+            pygame.draw.rect(screen, selected_colour if colour_state[input_rects.index(i)] else not_selected_colour, i, width=5, border_radius=5)
+
+        pygame.draw.rect(screen, not_selected_colour, apply_rect, width=5, border_radius = 5)
+        pygame.draw.rect(screen, not_selected_colour, if_hex_rect, width=5, border_radius = 5)
+        pygame.draw.rect(screen, not_selected_colour, back_rect, width=5, border_radius =5)
         #pygame.draw.line(screen, (255,0,0), (100,0), (100,win_y), width=5)
         size_surface = base_font.render('size', True, BLACK)
         length_surface = base_font.render('length', True, BLACK)
@@ -220,31 +237,30 @@ def run():
         snake_colour_1_input_surface = base_font.render(user_text[3], True,BLACK )
         snake_colour_2_input_surface = base_font.render(user_text[4], True,BLACK )
         speed_input_surface = base_font.render(user_text[5], True, BLACK)
+        back_surface = base_font.render('back', True, BLACK)
     
-        screen.blit(size_input_surface, calc_mid_of_rect_for_text(size_input_rect, size_input_surface))
-        screen.blit(size_surface, (size_input_rect.x - size_surface.get_width(), size_input_rect.y))
 
-        screen.blit(length_input_surface, calc_mid_of_rect_for_text(length_input_rect, length_input_surface))
-        screen.blit(length_surface, (length_input_rect.x - length_surface.get_width(), length_input_rect.y))
+        draw_surfaces(screen, size_input_surface, size_surface, size_input_rect)
 
-        screen.blit(head_colour_input_surface, calc_mid_of_rect_for_text(head_colour_input_rect, head_colour_input_surface))
-        screen.blit(head_colour_surface,calc_offset_of_outside_text(head_colour_input_rect,head_colour_surface))
+        draw_surfaces(screen, length_input_surface, length_surface, length_input_rect)
 
-        screen.blit(snake_colour_1_input_surface, calc_mid_of_rect_for_text(snake_colour_1_input_rect, snake_colour_1_input_surface))
-        screen.blit(snake_colour_1_surface, calc_offset_of_outside_text(snake_colour_1_input_rect,snake_colour_1_surface))
+        draw_surfaces(screen, head_colour_input_surface, head_colour_surface, head_colour_input_rect)
 
-        screen.blit(snake_colour_2_input_surface, calc_mid_of_rect_for_text(snake_colour_2_input_rect, snake_colour_2_input_surface))
-        screen.blit(snake_colour_2_surface, calc_offset_of_outside_text(snake_colour_2_input_rect,snake_colour_2_surface))
+        draw_surfaces(screen, snake_colour_1_input_surface, snake_colour_1_surface, snake_colour_1_input_rect)
 
-        screen.blit(speed_input_surface, calc_mid_of_rect_for_text(speed_input_rect, speed_input_surface))
-        screen.blit(speed_surface, calc_offset_of_outside_text(speed_input_rect, speed_surface))
+        draw_surfaces(screen, snake_colour_2_input_surface, snake_colour_2_surface, snake_colour_2_input_rect)
+
+        draw_surfaces(screen, speed_input_surface, speed_surface, speed_input_rect)
 
         screen.blit(if_hex_surface, calc_mid_of_rect_for_text(if_hex_rect, if_hex_surface))
 
-        screen.blit(apply_surface,(apply_rect.topleft))
+        screen.blit(apply_surface, calc_mid_of_rect_for_text(apply_rect, apply_surface))
+
+        screen.blit(back_surface, calc_mid_of_rect_for_text(back_rect, back_surface))
 
 
         #input_rect.w = max(100, text_surface.get_width()+10)
         pygame.display.flip()
     
-        clock.tick(60)
+        clock.tick(6)
+# run()

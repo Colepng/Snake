@@ -1,0 +1,140 @@
+
+                # if command == "username":
+                #     good_or_bad = data_split[1]
+
+                #     if good_or_bad == "good":
+                #         print("username good")
+                #     else:
+                #         print("username bad")
+                #         while 1:
+                #             username = input("username taken please input a new username")
+                #             server.send(f"check_username {username}".encode("utf-8"))
+                #             pass
+       
+       
+       
+       # elif command == "public_username":
+                #     good_or_bad = data_split[1]
+
+                #     if good_or_bad == "good":
+                #         print("public username good")
+                #     else:
+                #         print("public username bad")
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+        # server.connect((HOST,PORT))
+        # # # # # # # # server.sendall(b"Hello world")
+        # # # # # # # run = True
+        # # # # # # # with open("Snake.sqlite3","wb") as f:
+        # # # # # # #     while run:
+        # # # # # # #         f_reading = server.recv(4096)
+        # # # # # # #         # print(f_reading)
+        # # # # # # #         if not f_reading:
+        # # # # # # #             # print("not reading")
+        # # # # # # #             break
+
+        # # # # # # #         f.write(f_reading)
+
+        # # # # # # # # server.shutdown(socket.SHUT_WR)
+
+
+
+
+
+
+
+
+
+
+
+# local database code 
+            # get_username = f"SELECT username FROM Snake WHERE username = '{username}';"
+            # cur.execute(get_username)
+            # fetch = cur.fetchall()
+            # print(type(fetch))
+            # print(fetch)
+            # if type(fetch) != NoneType:
+            #     print("user name taken")
+            #     username = input("input a differnt username ")
+            # else:
+            #     print("username not taken")
+            #     add_new_user = f"INSERT INTO Snake VALUES ('{username}','{password}','{public_username}','{highscore}')"
+            #     cur.execute(add_new_user)
+            #     con.commit()
+            #     con.close()
+            #     break
+        #make a function the send hello world to server
+
+    # account_yes_no = input("Do you have an account? ")
+
+    # if account_yes_no.lower() == "no":
+
+    #         if input("Would you like to make an account ").lower() == "yes":
+    #             if connect():
+    #                 username = input("input a username ")
+    #                 public_username = input("input a public username ")
+    #                 create_user(username, public_username)
+    #             else: print("You can't not make an account with no internect connection")
+
+    #         else: print("Ok you can make an account and anytime to get acces to your progress anywhere and acces the leaderboarsd")
+
+        
+
+    # elif account_yes_no.lower() == "yes":
+    #     if_password = login_user(input("Enter your username? "),input("Enter your password? "))
+    #     while not if_password:
+    #         if_password = login_user(input("Enter your username? "),input("Enter your password? "))
+    #         print("testing")
+    #     print("username and password correct welcome")
+
+    # loop()
+                    #testing disconnect and reconnect
+                    # print("starting")
+                    # disconnect_server(server)
+                    # print("disconnected")
+                    # server.connect((socket.gethostbyname(socket.gethostname()),8081))
+                    # print("disconnect and reconnected")
+
+
+    # update_local_database()
+
+    # server.sendall(b"hello world")
+    # server.sendall(b"updated world")
+
+    # def login_user(username,password):
+    #     """
+    #     connect to sever
+    #     do login
+    #     disconnect
+        
+        
+        
+        
+        
+        
+        
+    #     """
+    #     connect_server()
+
+
+
+    # for i in range(100):
+    #     server.sendall(b"Hello world")
+    #     print("test")
+
+
+
+    # server.sendall(b'update_highscore png')
+    # print("sent")
+    # server.close()
+
+    # main_menu.run_game()

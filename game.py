@@ -23,6 +23,7 @@ class game: #Crates a class for the actual game
         
     
     def run(self, surface, length, size, win_x, win_y, starting_x, starting_y, head_colour, snake_colour_1, snake_colour_2,if_hex, speed):# The games loop
+        print(speed)
         #sets the windoes size
         #fun.set_up_highscore()
         self.snake = snake.Snake(surface, length, size, win_x, win_y, starting_x, starting_y, head_colour, snake_colour_1, snake_colour_2,if_hex)
@@ -52,6 +53,9 @@ class game: #Crates a class for the actual game
                 if event.type == QUIT:#if the user press the x at the top of the screen it will close the program
                     sys.exit()
 
-            self.snake.auto_move()#calls the auto move function
+            if self.snake.auto_move(): #calls the auto move function
+                print("test")
+                return 
+            #print(speed)
             clock.tick(speed)#sets the in game tick speed
 

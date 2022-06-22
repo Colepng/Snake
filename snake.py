@@ -135,17 +135,29 @@ class Snake():
             self.y[0] += self.SIZE
             self.move = True
 
+
+        
+
+
         if self.x[0] > self.win_x - self.SIZE or self.x[0] < 0 or self.y[0] > self.win_y - self.SIZE or self.y[0] < 0:
-            if play_again(self.parent_screen, self.starting_x, self.starting_y, 500, 400, self.apple_count) == True:
+            play_again_result = play_again(self.parent_screen, self.starting_x, self.starting_y, 500, 400, self.apple_count)
+            print(play_again_result)
+            if play_again_result:
                 self.reset()
+            elif play_again_result == "Main Menu":
+                    return True
             else:
                 sys.exit()
             print('border')
 
         for i in range(2, self.length):
             if self.head.topleft == (self.x[i], self.y[i]):
-                if play_again(self.parent_screen, self.starting_x, self.starting_y, 500, 400, self.apple_count) == True:
+                play_again_result = play_again(self.parent_screen, self.starting_x, self.starting_y, 500, 400, self.apple_count)
+                print(play_again_result)
+                if play_again_result:
                     self.reset()
+                elif play_again_result == "Main Menu":
+                    return True
                 else:
                     sys.exit()
                 print('body')
