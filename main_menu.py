@@ -9,6 +9,7 @@ import sqlite3 as sql
 from game import game as game
 import setting_menu
 from account__screen import login_create_account_screen
+from fun import calc_mid_of_rect_for_text
 
 
 def write_leaderboard(screen, names, scores, leaderboard_rect):
@@ -72,13 +73,16 @@ def run_game():
 
 
     # Loads the setting icon, sets its size and gets a rect for its
-    setting_icon_no_size_change = pygame.image.load(
-        "Assests/setting_icon.png").convert_alpha()
-    setting_icon = pygame.transform.scale(setting_icon_no_size_change, (50, 50))
-    setting_icon_rect = setting_icon.get_rect(x=10, y=10)
+    # setting_icon_no_size_change = pygame.image.load(
+    #     "Assests/setting_icon.png").convert_alpha()
+    # setting_icon = pygame.transform.scale(setting_icon_no_size_change, (50, 50))
+    # setting_icon_rect = setting_icon.get_rect(x=10, y=10)
+    setting_rect = pygame.Rect(0, 0, 200, 50)
+    setting_surface = font_small.render("Settings", True, BLACK)
 
     # account screen
-    account_screen_rect = pygame.Rect(win_x - 50, 0, 50, 50,)
+    account_screen_rect = pygame.Rect(win_x - 200, 0, 200, 50)
+    account_surface = font_small.render("Account", True, BLACK)
 
     # leaderboard
     leaderboard_rect = pygame.Rect(win_x - 250, 200, 200, 600)
@@ -94,10 +98,12 @@ def run_game():
         users, scores = get_users_and_scores()
         write_leaderboard(screen, users, scores, leaderboard_rect)
         pygame.draw.rect(screen, BLACK, play_rect, width=5)
-        pygame.draw.rect(screen, BLACK, account_screen_rect)
+        pygame.draw.rect(screen, BLACK, account_screen_rect, 5, 5)
         pygame.draw.rect(screen, BLACK, leaderboard_rect, width=5)
         screen.blit(text, text_rect)
-        screen.blit(setting_icon, setting_icon_rect)
+        pygame.draw.rect(screen, BLACK, setting_rect, 5, 5)
+        screen.blit(setting_surface, calc_mid_of_rect_for_text(setting_rect, setting_surface))
+        screen.blit(account_surface, calc_mid_of_rect_for_text(account_screen_rect, account_surface))
         pygame.display.flip()
 
 
@@ -123,7 +129,7 @@ def run_game():
             screen = pygame.display.set_mode((win_x, win_y))
             #print(pygame.display.get_window_size(), win_x, win_y)
 
-            if event.type == MOUSEBUTTONDOWN and setting_icon_rect.collidepoint(event.pos):
+            if event.type == MOUSEBUTTONDOWN and setting_rect.collidepoint(event.pos):
                 setting_menu.run()
                 setting_file.close()
                 setting_file = open('settings.json',) if logged == False else open('account_settings.json',)

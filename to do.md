@@ -24,6 +24,8 @@
 
 #add a sync button that updates the user highscore server side and gets new data from the server ✔
 
+#add a back button in settings menu ✔
+
 #change how eveything works by making the server able to talk to mutlitple clients at once
 
 #implement a leaderboard ✔

@@ -53,7 +53,9 @@ class game: #Crates a class for the actual game
                 if event.type == QUIT:#if the user press the x at the top of the screen it will close the program
                     sys.exit()
 
-            self.snake.auto_move()#calls the auto move functio
+            if self.snake.auto_move(): #calls the auto move function
+                print("test")
+                return 
             #print(speed)
             clock.tick(speed)#sets the in game tick speed
 
