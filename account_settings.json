@@ -6,34 +6,34 @@
     "size": 35,
     "length": 6,
     "head_colour": [
-        50,
-        0,
-        100
+        102,
+        22,
+        240
     ],
     "snake_colour_1": [
-        100,
-        0,
-        50
+        1,
+        2,
+        3
     ],
     "snake_colour_2": [
-        0,
-        0,
-        0
+        45,
+        66,
+        99
     ],
     "head_colour_rgb": [
-        50,
-        0,
-        100
+        102,
+        22,
+        240
     ],
     "snake_colour_1_rgb": [
-        100,
-        0,
-        50
+        1,
+        2,
+        3
     ],
     "snake_colour_2_rgb": [
-        0,
-        0,
-        0
+        45,
+        66,
+        99
     ],
     "head_colour_hex": "#0000FF",
     "snake_colour_1_hex": "#00FF00",

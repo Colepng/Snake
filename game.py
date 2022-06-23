@@ -5,9 +5,9 @@ from pygame.locals import *
 import sys
 
 from pause_menu import pause_menu
-
 import snake
 import fun
+
 
 clock=pygame.time.Clock()
 
@@ -15,37 +15,36 @@ clock=pygame.time.Clock()
 
 running = True
 
-
-
-class game: #Crates a class for the actual game
-    #def __init__(self):
-        #gives the snake class its function and macking it a local varible, first argument is the surface and the second one is the legnth
-        
+class game: #Crates a class for the actual game     
     
     def run(self, surface, length, size, win_x, win_y, starting_x, starting_y, head_colour, snake_colour_1, snake_colour_2,if_hex, speed):# The games loop
-        print(speed)
-        #sets the windoes size
-        #fun.set_up_highscore()
+        if False:
+            fun.set_up_highscore()
+
         self.snake = snake.Snake(surface, length, size, win_x, win_y, starting_x, starting_y, head_colour, snake_colour_1, snake_colour_2,if_hex)
         self.snake.draw()
-        #print(pygame.display.get_window_size())
+
         snake.running = True
         while snake.running:
             for event in pygame.event.get():#gets all events that are happening
-                #print(pygame.display.get_window_size())
+ 
                 if event.type == KEYDOWN:
                     if event.key == K_ESCAPE:#if the esc key is press it stop the loop from running
                         pause_menu(surface, win_x, win_y, starting_x, starting_y)               
-                            
+
+                    #Sets the snake direction to left          
                     if event.key == K_LEFT or event.key == K_a:
                         self.snake.move_left()
 
+                    #Sets the snake direction to right
                     if event.key == K_RIGHT or event.key == K_d:
                         self.snake.move_right()
 
+                    #Sets the snake direction to up
                     if event.key == K_UP or event.key == K_w:
                         self.snake.move_up()
 
+                    #Sets the snake direction to down
                     if event.key == K_DOWN or event.key == K_s:
                         self.snake.move_down()
             
@@ -54,8 +53,7 @@ class game: #Crates a class for the actual game
                     sys.exit()
 
             if self.snake.auto_move(): #calls the auto move function
-                print("test")
-                return 
-            #print(speed)
-            clock.tick(speed)#sets the in game tick speed
+                return
+
+            clock.tick(speed)#sets the frame rate
 

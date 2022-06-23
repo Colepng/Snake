@@ -1,4 +1,3 @@
-#
 import pygame
 from pygame.locals import *
 from pygame.rect import *
@@ -7,7 +6,7 @@ import json
 import sys
 import sqlite3 as sql
 
-from game import game as game
+from game import game 
 import setting_menu
 from account__screen import login_create_account_screen
 from fun import calc_mid_of_rect_for_text
@@ -140,11 +139,11 @@ def run_game():
             #Checks if the event is a click and what rectangles was clicked on
             if event.type == MOUSEBUTTONDOWN and setting_rect.collidepoint(event.pos):
                 #Setting menu
-                setting_menu.run()
+                setting_menu.run(screen)
 
             elif event.type == MOUSEBUTTONDOWN and play_rect.collidepoint(event.pos):
                 #Starts the game
-                game().run(screen, length, size, win_x, win_y,starting_x, starting_y,head_colour,snake_colour_1,snake_colour_2,if_hex, speed)
+                game().run(screen, length, size, win_x, win_y,starting_x, starting_y,head_colour,snake_colour_1,snake_colour_2, if_hex, speed)
                 
             elif event.type == MOUSEBUTTONDOWN and account_screen_rect.collidepoint(event.pos):
                 login_create_account_screen(screen)

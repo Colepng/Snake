@@ -99,6 +99,7 @@ class Snake():
             self.direction = "down"
             self.move = False
 
+    #Resets the snakes length, apple_count, postion, and apple position
     def reset(self):
         self.length = self.staring_length
         self.apple_count = 0
@@ -113,31 +114,25 @@ class Snake():
 
     def auto_move(self):
         for i in range(self.length-1, 0, -1):
-            # if self.x[i] == 0
             self.x[i] = self.x[i - 1]
-            # print(self.x[i])
+
             self.y[i] = self.y[i - 1]
-            # print(self.y[i])
 
         if self.direction == "left":
             self.x[0] -= self.SIZE
             self.move = True
-           #  print(self.x[0])
-        if self.direction == "right":
+
+        elif self.direction == "right":
             self.x[0] += self.SIZE
             self.move = True
-           # print(self.x[0])
-        if self.direction == "up":
+
+        elif self.direction == "up":
             self.y[0] -= self.SIZE
             self.move = True
-           # print(self.y[0])
-        if self.direction == "down":
+
+        elif self.direction == "down":
             self.y[0] += self.SIZE
             self.move = True
-
-
-        
-
 
         if self.x[0] > self.win_x - self.SIZE or self.x[0] < 0 or self.y[0] > self.win_y - self.SIZE or self.y[0] < 0:
             play_again_result = play_again(self.parent_screen, self.starting_x, self.starting_y, 500, 400, self.apple_count)
