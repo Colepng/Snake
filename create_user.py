@@ -70,11 +70,11 @@ def create_user(screen):
 
                 if create_user_rect.collidepoint(event.pos):
                     if input_texts[2] == input_texts[3]:
-                        print("create user")
-                        print(username_input_text, password_input_text, public_username_input_text)
                         username_good_bad, p_username_good_bad = main("create_user", input_texts[0], input_texts[2], input_texts[1])
                         if username_good_bad == "good" and p_username_good_bad == "good":
                             print("good")
+                        main("login", input_texts[0], input_texts[2])
+                        return
                 elif back_rect.collidepoint(event.pos):
                     return
                     

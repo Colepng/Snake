@@ -8,18 +8,22 @@ from fun import get_highscore, update_account_highscore
 from settings import load_account_settings, write_logged
 import time
 
+
 def main(fun, username, password=None, public_username=None, highscore=None, settings=None):
-    #print(highscore, "in main")
+
+    #A loop that recives data from the server and decodes it
     def loop():
-        #print("starting loop")
+
         while 1:
             data = server.recv(1024)
-            #print("im stuck in loop")
+
 
             if data != None and data != b'':
-                #print(data)
+                #decodes the data
                 data_decoded = data.decode('utf-8')
                 print(data_decoded)
+
+                #splits the data
                 data_split = data_decoded.split(" ")
                 print(data_split)
                 command = data_split[0]
@@ -27,16 +31,17 @@ def main(fun, username, password=None, public_username=None, highscore=None, set
                 
                 
                 if command == "sync":
+                    #Opens the database
                     with open("Snake.sqlite3","wb") as f:
                         while 1:
                             print("im stuck in sync")
                             f_reading = server.recv(4096)
-                            # print(f_reading)
                             if not f_reading:
                                 print("not reading")
                                 if fun == "create_user":
                                     return "good", "good"
                                 break
+                            #Writes the data sent from sever to the file
                             f.write(f_reading)
                     break
 
@@ -59,6 +64,7 @@ def main(fun, username, password=None, public_username=None, highscore=None, set
                 elif command == "updated_highscore":
                     return "updated_highscore"
                     
+    #Checks if the computer has a internet connection
     def connect(host='http://google.com'):
         try:
             urllib.request.urlopen(host)
@@ -86,25 +92,25 @@ def main(fun, username, password=None, public_username=None, highscore=None, set
 
     def sync():
         server.send("sync".encode("utf-16"))
-        #print("sync sent")
 
     def update_highscore(username, highscore):
-        #print(highscore,"in highscore")
         server.send(f"update_highscore {username} {highscore}".encode("utf-16"))
         loop()
 
     def login_user(username, password):
+        #If the computer has a internet connection then it will try and sync the local database
         if connect():
             sync()
             loop()
         else:
-            print("Can not acsess the internet, so using the newset database on this computer")
+            print("Can not acsess the internet, so using the newest database on this computer")
+        #Connects to the database
         con = sql.connect("Snake.sqlite3")
         cur = con.cursor()
 
         get_username = f"SELECT username, password FROM Snake WHERE username = '{username}' and password = '{password}'"
-        cur.execute(get_username)
-        fetch = cur.fetchone()
+        cur.execute(get_username)#Executes the sql code
+        fetch = cur.fetchone()#Fetchs what the sql code returned
         print(fetch)
         if type(fetch) != NoneType:
             select_highscore  = f"SELECT highscore FROM Snake WHERE username = '{username}'"
@@ -121,22 +127,15 @@ def main(fun, username, password=None, public_username=None, highscore=None, set
 
 
 
-
+    #A function that creates a user
     def create_user(username, public_username, password):
-
-        # con = sql.connect("Snake.sqlite3")
-        # cur = con.cursor()
-            # online database code
-            # print(f"create_user {username} {public_username} {password} {0}")
-        server.sendall(f"create_user {username} {public_username} {password} {0}".encode("utf-16"))#in the furture replcace the zero with the local highscore
+        server.sendall(f"create_user {username} {public_username} {password} {0}".encode("utf-16"))
         loop_test = loop()
         print(loop_test)
-        # sync()
-        # loop()
         return loop_test
 
 
-            
+    #Logins the user
     if fun == "login":
         print("login")
         print(username,password)
@@ -149,37 +148,32 @@ def main(fun, username, password=None, public_username=None, highscore=None, set
             print("username or password incorrect")
             return False
 
+    #Creates the user
     elif fun == "create_user":
         print("create_user")
         print(username, public_username)
         return create_user(username, public_username, password)
 
+    #syncs the database
     elif fun == "sync":
-        #print(highscore, "in sync")
         update_highscore(username, highscore)
-        #print("In sync function")
         sync()
         loop()
         print("ending sync function")
         return "done"
 
+    #Updates the settings on the server
     elif fun == "update_settings":
-       # print(f"{settings}")
-        #print(type(username), username)
-        #server.sendall(b'')
         server.sendall(f"sync_settings {username}".encode("utf-16"))
         while 1:
             data = server.recv(1024)
             if data == b'ready':
                 break
         pickled_settings = pickle.dumps(settings)
-        #print(pickled_settings)
-        server.sendall(pickled_settings)
-        #sync()
-        #print("ending sync starting loop")
-        #loop()
-        #return "done"
 
+        server.sendall(pickled_settings)
+
+    #Load the settings from the cloud
     elif fun == "load_settings":
         if connect():
             sync()
@@ -197,11 +191,5 @@ def main(fun, username, password=None, public_username=None, highscore=None, set
             update_account_highscore(fetch_highscore[0])
             print("updated highscore")
         load_account_settings(username)
-
     if connect():
         server.close()
-
-
-
-if __name__ == "__main__":
-    main()
